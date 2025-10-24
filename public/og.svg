@@ -10,10 +10,14 @@
       <stop offset="100%" stop-color="#000" stop-opacity="0"/>
     </radialGradient>
   </defs>
+
   <rect width="1200" height="630" fill="url(#g)"/>
   <circle cx="940" cy="80" r="420" fill="url(#r)"/>
+  
   <g fill="#fff">
-    <text x="80" y="210" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-weight="700" font-size="72">Curtis Bolden</text>
+    <text x="80" y="210" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-weight="700" font-size="72">
+      Curtis Bolden
+    </text>
     <text x="80" y="280" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-weight="600" font-size="54" fill="#e5e7eb">
       Structural BIM + Automation
     </text>
@@ -21,5 +25,6 @@
       pyRevit/C# tooling • Revit ↔ Analysis handoffs • Dashboards & QA/QC
     </text>
   </g>
+
   <rect x="80" y="420" width="420" height="4" fill="#a78bfa" opacity="0.9"/>
 </svg>
