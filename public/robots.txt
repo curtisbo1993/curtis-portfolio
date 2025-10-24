@@ -1,4 +1,3 @@
 User-agent: *
 Allow: /
-
-Sitemap: https://curtis-portfolio.vercel.app/sitemap.xml
+Sitemap: https://cb-designconsultants.com/sitemap.xml
