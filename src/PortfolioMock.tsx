@@ -89,21 +89,29 @@ export default function PortfolioMock() {
   ];
 
   // Router (hash-based)
-  useEffect(() => {
-    const parse = () => {
-      const h = window.location.hash.replace('#', '');
-      if (!h || h === '/') setRoute('home');
-      else if (h.startsWith('/work/pyrevit-sheet-suite')) setRoute('work:pyrevit');
-      else if (h.startsWith('/work')) setRoute('work');
-      else if (h.startsWith('/services')) setRoute('services');
-      else if (h.startsWith('/tools')) setRoute('tools');
-      else if (h.startsWith('/about')) setRoute('about');
-      else setRoute('home');
-    };
-    parse();
-    window.addEventListener('hashchange', parse);
-    return () => window.removeEventListener('hashchange', parse);
-  }, []);
+useEffect(() => {
+  const parse = () => {
+    // 1) If the URL uses old #/about style, convert it to a path once
+    const hash = window.location.hash.replace('#', '');
+    if (hash.startsWith('/')) {
+      history.replaceState(null, '', hash); // turn "#/about" into "/about"
+    }
+
+    // 2) Use path-based routing going forward
+    const p = window.location.pathname; // e.g. "/about"
+    if (!p || p === '/') setRoute('home');
+    else if (p.startsWith('/work/pyrevit-sheet-suite')) setRoute('work:pyrevit');
+    else if (p.startsWith('/work')) setRoute('work');
+    else if (p.startsWith('/services')) setRoute('services');
+    else if (p.startsWith('/tools')) setRoute('tools');
+    else if (p.startsWith('/about')) setRoute('about');
+    else setRoute('home');
+  };
+
+  parse();
+  window.addEventListener('popstate', parse);
+  return () => window.removeEventListener('popstate', parse);
+}, []);
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -153,14 +161,14 @@ export default function PortfolioMock() {
       {/* NAVBAR */}
       <header className="sticky top-0 z-50 backdrop-blur supports-[backdrop-filter]:bg-neutral-950/70 border-b border-white/10">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <a href="#/" className="font-semibold tracking-tight text-lg">Curtis Bolden — Portfolio</a>
+          <a href="/" className="font-semibold tracking-tight text-lg">Curtis Bolden — Portfolio</a>
           <nav className="hidden md:flex items-center gap-8 text-sm">
-            <a href="#/" className="hover:text-white/90 text-white/70">Home</a>
-            <a href="#/work" className="hover:text-white/90 text-white/70">Work</a>
-            <a href="#/services" className="hover:text-white/90 text-white/70">Services</a>
-            <a href="#/tools" className="hover:text-white/90 text-white/70">Tools</a>
-            <a href="#/about" className="hover:text-white/90 text-white/70">About</a>
-            <a href="#contact" className="rounded-xl border border-white/15 px-4 py-2 hover:bg-white/10 transition">Book a consult</a>
+            <a href="/" className="hover:text-white/90 text-white/70">Home</a>
+            <a href="/work" className="hover:text-white/90 text-white/70">Work</a>
+            <a href="/services" className="hover:text-white/90 text-white/70">Services</a>
+            <a href="/tools" className="hover:text-white/90 text-white/70">Tools</a>
+            <a href="/about" className="hover:text-white/90 text-white/70">About</a>
+            <a href="contact" className="rounded-xl border border-white/15 px-4 py-2 hover:bg-white/10 transition">Book a consult</a>
           </nav>
         </div>
       </header>
@@ -177,8 +185,8 @@ export default function PortfolioMock() {
                 <h1 className="mt-4 text-4xl/tight md:text-6xl/tight font-semibold">Structural BIM + Automation that saves hours.</h1>
                 <p className="mt-5 text-lg text-white/80 max-w-2xl">Revit tooling, analysis handoffs, and dashboards that cut friction—pyRevit/C# scripts, data pipelines, and QA/QC checks that teams actually use.</p>
                 <div className="mt-8 flex flex-wrap gap-3">
-                  <a href="#contact" className="inline-flex items-center rounded-2xl bg-white text-neutral-900 px-5 py-3 font-medium hover:opacity-90 transition">Book a 15‑min consult</a>
-                  <a href="#work" className="inline-flex items-center rounded-2xl border border-white/20 px-5 py-3 font-medium hover:bg-white/10 transition">See case studies</a>
+                  <a href="contact" className="inline-flex items-center rounded-2xl bg-white text-neutral-900 px-5 py-3 font-medium hover:opacity-90 transition">Book a 15‑min consult</a>
+                  <a href="work" className="inline-flex items-center rounded-2xl border border-white/20 px-5 py-3 font-medium hover:bg-white/10 transition">See case studies</a>
                 </div>
                 <div className="mt-10 flex flex-wrap gap-2 text-xs">
                   {['Revit API (C#)','pyRevit','Dynamo','Python','ETABS / RISA / RAM','Power BI','Next.js'].map(t => (
