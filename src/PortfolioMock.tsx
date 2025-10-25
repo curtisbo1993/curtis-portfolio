@@ -1,6 +1,24 @@
 // @ts-nocheck
 import { useEffect, useState, useRef } from 'react';
 
+// Reusable navigation link component for smooth SPA navigation
+function NavLink(props: React.AnchorHTMLAttributes<HTMLAnchorElement>) {
+  return (
+    <a
+      {...props}
+      onClick={(e) => {
+        const href = e.currentTarget.getAttribute('href') || '';
+        if (href.startsWith('/')) {
+          e.preventDefault(); // stop full reload
+          history.pushState(null, '', href);
+          // Tell the router (useEffect in A2) that URL changed:
+          window.dispatchEvent(new PopStateEvent('popstate'));
+        }
+      }}
+    />
+  );
+}
+
 // Single-file, clean build of the portfolio mock with fixed JSX/TSX,
 // no stray braces/tags, and small smoke tests in console.assert.
 // Keep this file self-contained so it runs in ChatGPT canvas or any React sandbox.
@@ -163,11 +181,11 @@ useEffect(() => {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <a href="/" className="font-semibold tracking-tight text-lg">Curtis Bolden — Portfolio</a>
           <nav className="hidden md:flex items-center gap-8 text-sm">
-            <a href="/" className="hover:text-white/90 text-white/70">Home</a>
-            <a href="/work" className="hover:text-white/90 text-white/70">Work</a>
-            <a href="/services" className="hover:text-white/90 text-white/70">Services</a>
-            <a href="/tools" className="hover:text-white/90 text-white/70">Tools</a>
-            <a href="/about" className="hover:text-white/90 text-white/70">About</a>
+            <NavLink href="/" className="hover:text-white/90 text-white/70">Home</NavLink>
+            <NavLink href="/work" className="hover:text-white/90 text-white/70">Work</NavLink>
+            <NavLink href="/services" className="hover:text-white/90 text-white/70">Services</NavLink>
+            <NavLink href="/tools" className="hover:text-white/90 text-white/70">Tools</NavLink>
+            <NavLink href="/about" className="hover:text-white/90 text-white/70">About</NavLink>
             <a href="contact" className="rounded-xl border border-white/15 px-4 py-2 hover:bg-white/10 transition">Book a consult</a>
           </nav>
         </div>
