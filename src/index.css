@@ -1,13 +1,130 @@
-/* Tailwind v4 single import */
+/* Keep your Tailwind import */
 @import "tailwindcss";
 
-/* Your additional base tweaks */
+/* --- Color Tokens: Light theme --- */
+:root {
+  /* Revit-style blue (adjust to your exact brand later) */
+  --brand-50:  210 100% 97%;
+  --brand-100: 210 95% 90%;
+  --brand-200: 210 90% 80%;
+  --brand-300: 210 85% 70%;
+  --brand-400: 210 80% 60%;
+  --brand-500: 210 85% 50%; /* primary */
+  --brand-600: 210 90% 42%;
+  --brand-700: 210 95% 35%;
+  --brand-800: 210 96% 28%;
+  --brand-900: 210 98% 20%;
+
+  /* Neutral slate (cool greys) */
+  --neutral-50:  220 20% 97%;
+  --neutral-100: 220 15% 92%;
+  --neutral-200: 220 12% 84%;
+  --neutral-300: 220 10% 74%;
+  --neutral-400: 220 9%  64%;
+  --neutral-500: 220 8%  54%;
+  --neutral-600: 220 8%  45%;
+  --neutral-700: 220 9%  36%;
+  --neutral-800: 220 10% 26%;
+  --neutral-900: 220 12% 16%;
+
+  /* Surface tokens */
+  --bg:     0 0% 100%;
+  --fg:     220 15% 15%;
+  --card:   0 0% 100%;
+  --border: 220 14% 90%;
+}
+
+:root {
+  /* … your color tokens stay here … */
+
+  /* Typography tokens */
+  --font-heading: "Poppins", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+                  Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji",
+                  "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-body:    "DM Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+                  Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji",
+                  "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+/* --- Color Tokens: Dark theme (enabled by .dark class) --- */
+.dark {
+  --bg:     220 12% 10%;
+  --fg:     220 15% 92%;
+  --card:   220 12% 12%;
+  --border: 220 12% 18%;
+}
+
+/* --- Gradient helpers you can drop into components --- */
+.gradient-brand {
+  background-image: linear-gradient(135deg, hsl(var(--brand-600)) 0%, hsl(var(--brand-400)) 100%);
+}
+
+.gradient-brand-soft {
+  background-image: linear-gradient(135deg, hsl(var(--brand-50)) 0%, hsl(var(--brand-100)) 100%);
+}
+
+.gradient-card {
+  background-image: linear-gradient(180deg, hsl(var(--card)) 0%, hsl(var(--bg)) 100%);
+}
+
+/* Subtle grid (respects light/dark via --border) */
+.bg-grid {
+  background-image:
+    linear-gradient(to right, hsl(var(--border) / 0.25) 1px, transparent 1px),
+    linear-gradient(to bottom, hsl(var(--border) / 0.25) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Very light vignette to soften edges */
+.vignette:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(120% 100% at 50% 0%,
+    transparent 0%, transparent 55%, hsl(var(--bg) / 0.85) 100%);
+}
+
+.bg-grid {
+  background-image:
+    linear-gradient(to right, hsl(var(--border) / 0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, hsl(var(--border) / 0.1) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Base tweaks using the new tokens */
 @layer base {
   html {
     font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI,
       Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji",
       "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-    color-scheme: dark;
+    color-scheme: dark light;
   }
-  body { @apply bg-neutral-950 text-neutral-100; }
+
+  body {
+    /* You already set colors earlier; keep them */
+    background-color: hsl(var(--bg));
+    color: hsl(var(--fg));
+    font-family: var(--font-body); /* DM Sans */
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading); /* Poppins */
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+
+  /* Responsive, readable scale */
+  h1 { @apply text-4xl md:text-5xl font-semibold; }
+  h2 { @apply text-3xl md:text-4xl font-semibold; }
+  h3 { @apply text-2xl md:text-3xl font-semibold; }
+  h4 { @apply text-xl md:text-2xl font-semibold; }
+  h5 { @apply text-lg font-semibold; }
+  h6 { @apply text-base font-semibold; }
+
+  p, li { @apply text-base; }
+  small { @apply text-sm; }
 }

@@ -42,12 +42,14 @@ export default function PortfolioMock() {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const totalPages = 5;
 
-  // Hero media (safe defaults)
-  const HERO_VIDEO_SRC = '';
-  const HERO_VIDEO_SRC_DESKTOP = '';
-  const HERO_VIDEO_SRC_MOBILE = '';
-  const HERO_POSTER_SRC = 'data:image/gif;base64,R0lGODlhAQABAAAAACw='; // 1x1 transparent pixel
-  const HAS_VIDEO_SOURCES = Boolean(HERO_VIDEO_SRC || HERO_VIDEO_SRC_DESKTOP || HERO_VIDEO_SRC_MOBILE);
+  // Hero media ***FIX AND UPDATE!!!!!
+const HERO_VIDEO_SRC = '/hero/Hero Video.mp4';          // fallback / default
+const HERO_VIDEO_SRC_DESKTOP = '/hero/Hero Video.mp4';  // desktop/high-res
+const HERO_VIDEO_SRC_MOBILE = '/hero/trailer-720.mp4';    // mobile/lower-res
+const HERO_POSTER_SRC = '/thumbnail.jpg';       // poster image
+const HAS_VIDEO_SOURCES = Boolean(
+  HERO_VIDEO_SRC || HERO_VIDEO_SRC_DESKTOP || HERO_VIDEO_SRC_MOBILE
+);
 
   // Respect user motion/data settings
   const [canAutoplay, setCanAutoplay] = useState(true);
@@ -77,28 +79,72 @@ export default function PortfolioMock() {
   ];
 
   const toolLogos: ToolLogo[] = [
-    { name: 'Autodesk Revit', src: 'https://upload.wikimedia.org/wikipedia/commons/8/8e/Autodesk_Revit_Logo.svg', level: 'Expert', years: 8, group: 'Modeling' },
-    { name: 'AutoCAD', src: 'https://upload.wikimedia.org/wikipedia/commons/6/6f/AutoCAD_logo.svg', level: 'Advanced', years: 8, group: 'Modeling' },
-    { name: 'Navisworks', src: 'https://upload.wikimedia.org/wikipedia/commons/1/13/Autodesk_Navisworks_logo.svg', level: 'Advanced', years: 6, group: 'Coordination' },
-    { name: 'InfraWorks', src: 'https://upload.wikimedia.org/wikipedia/commons/8/84/Autodesk_InfraWorks_logo.svg', level: 'Intermediate', years: 3, group: 'Infrastructure' },
-    { name: 'Advance Steel', src: 'https://upload.wikimedia.org/wikipedia/commons/7/77/Autodesk_Advance_Steel_logo.svg', years: 2, group: 'Steel' },
-    { name: 'Inventor Professional', src: 'https://upload.wikimedia.org/wikipedia/commons/b/b3/Autodesk_Inventor_Logo.svg', years: 2, group: 'Manufacturing' },
-    { name: 'Rhino 8', src: 'https://upload.wikimedia.org/wikipedia/commons/0/01/Rhinoceros3dLogo.png', level: 'Advanced', years: 5, group: 'Modeling' },
-    { name: 'Grasshopper', src: 'https://upload.wikimedia.org/wikipedia/commons/0/0b/Grasshopper_logo.png', level: 'Advanced', years: 5, group: 'Modeling' },
-    { name: 'Blender', src: 'https://upload.wikimedia.org/wikipedia/commons/0/0c/Blender_logo_no_text.svg', years: 3, group: 'Modeling' },
-    { name: 'Dynamo', src: 'https://upload.wikimedia.org/wikipedia/commons/7/75/Dynamo_logo.svg', level: 'Expert', years: 7, group: 'Automation' },
-    { name: 'Python', src: 'https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg', level: 'Advanced', years: 7, group: 'Scripting' },
-    { name: 'Power BI', src: 'https://upload.wikimedia.org/wikipedia/commons/c/cf/New_Power_BI_Logo.svg', years: 5, group: 'Data' },
-  ];
+  { name: 'Revit', src: '/assets/badges/RVT.png', level: 'Expert' },
+  { name: 'AutoCAD', src: '/assets/badges/CAD.png', level: 'Advanced' },
+  { name: 'Navisworks', src: '/assets/badges/MAN.png', level: 'Advanced' },
+  { name: 'Civil 3D', src: '/assets/badges/C3D.png', level: 'Advanced' },
+  { name: 'Advance Steel', src: '/assets/badges/ADS.png', level: 'Advanced' },
+  { name: 'ReCap Pro', src: '/assets/badges/PRO.png', level: 'Advanced' },
+  { name: 'Infraworks', src: '/assets/badges/IWX.png', level: 'Advanced' },
+  { name: 'Plant 3D', src: '/assets/badges/P3D.png', level: 'Advanced' },
+  { name: 'Inventor Pro', src: '/assets/badges/INV.png', level: 'Advanced' },
+  { name: 'Fusion 360', src: '/assets/badges/FUS.png', level: 'Advanced' },
+  { name: 'Workshop XR', src: '/assets/badges/XR.png', level: 'Advanced' },
+  { name: 'Maya', src: '/assets/badges/MAYA.png', level: 'Advanced' },
+  { name: '3ds Max', src: '/assets/badges/3DSMAX.png', level: 'Advanced' },
+  { name: 'Alias', src: '/assets/badges/AST.png', level: 'Advanced' },
+  { name: 'Forma', src: '/assets/badges/Forma.png', level: 'Advanced' },
+  { name: 'Blender', src: '/assets/badges/Blender.png', level: 'Advanced' },
+  { name: 'Rhino', src: '/assets/badges/Rhino.png', level: 'Advanced' },
+  { name: 'Sketchup', src: '/assets/badges/Sketchup.png', level: 'Advanced' },
+  { name: 'Solidworks', src: '/assets/badges/SW.png', level: 'Advanced' },
+  { name: 'Google Earth Pro', src: '/assets/badges/EarthPro.png', level: 'Advanced' },
+  { name: 'Sitescan ArcGIS', src: '/assets/badges/Sitescan_arcgis.png', level: 'Advanced' },
+  { name: 'D5 Render', src: '/assets/badges/D5 Render.png', level: 'Advanced' },
+  { name: 'Enscape', src: '/assets/badges/Enscape.png', level: 'Advanced' },
+  { name: 'Lumion', src: '/assets/badges/Lumion.png', level: 'Advanced' },
+  { name: 'Dynamo', src: '/assets/badges/Dynamo.png', level: 'Advanced' },
+  { name: 'Grasshopper', src: '/assets/badges/Grasshpper.png', level: 'Advanced' },
+  { name: 'Revit API', src: '/assets/badges/Revit API.png', level: 'Advanced' },
+  { name: 'C#', src: '/assets/badges/C#.png', level: 'Advanced' },
+  { name: 'html', src: '/assets/badges/html.png', level: 'Advanced' },
+  { name: 'Java', src: '/assets/badges/java.png', level: 'Advanced' },
+  { name: 'Python', src: '/assets/badges/Python.png', level: 'Advanced' },
+  { name: 'SQL', src: '/assets/badges/SQL.png', level: 'Advanced' },
+  { name: 'iTwins', src: '/assets/badges/itwins.png', level: 'Advanced' },
+  { name: 'Microstation', src: '/assets/badges/Microstation.png', level: 'Advanced' },
+  { name: 'Synchro Pro 4D', src: '/assets/badges/Sychpro.png', level: 'Advanced' },
+  { name: 'Ideate Software', src: '/assets/badges/Ideate.png', level: 'Advanced' },
+  { name: 'pyRevit', src: '/assets/badges/pyRevit.png', level: 'Advanced' },
+  { name: 'Photoshop', src: '/assets/badges/Ps.png', level: 'Advanced' },
+  { name: 'Premiere Pro', src: '/assets/badges/Pr.png', level: 'Advanced' },
+  { name: 'Illustrator', src: '/assets/badges/Ai.png', level: 'Advanced' },
+  { name: 'After Effects', src: '/assets/badges/Ae.png', level: 'Advanced' },
+  { name: 'Microsoft Suites', src: '/assets/badges/microsoft.png', level: 'Advanced' },
+  { name: 'PowerBI', src: '/assets/badges/Powerbi.png', level: 'Advanced' },
+  
+  // add the rest...***FIX AND UPDATE!!!!!
+];
 
   const companies: CompanyLogo[] = [
-    { name: 'ACME Construction' },
-    { name: 'Northbridge Engineering' },
-    { name: 'Vertex Industries' },
-    { name: 'Evergreen Labs' },
-    { name: 'Lattice Structures' },
-    { name: 'BluePeak Manufacturing' },
-  ];
+  { name: 'Ardurra', src: '/assets/logos/Ardurra.png' },
+  { name: 'Axiom', src: '/assets/logos/Axiom.png' },
+  { name: 'BSB Design', src: '/assets/logos/BSB Design.png' },
+  { name: 'CSA Group', src: '/assets/logos/CSA Group.png' },
+  { name: 'Farnsworth Group', src: '/assets/logos/Farnsworth Group.png' },
+  { name: 'Fluor', src: '/assets/logos/Fluor.png' },
+  { name: 'Ghafari', src: '/assets/logos/Ghafari.png' },
+  { name: 'ICC', src: '/assets/logos/ICC.png' },
+  { name: 'LAFP', src: '/assets/logos/LAFP.png' },
+  { name: 'Luchini Trujillo SE', src: '/assets/logos/Luchini Trujillo SE.png' },
+  { name: 'MKA', src: '/assets/logos/MKA.png' },
+  { name: 'Ponce Fuess SE', src: '/assets/logos/Ponce Fuess SE.png' },
+  { name: 'Tekla', src: '/assets/logos/Tekla.png' },
+  { name: 'Tesla', src: '/assets/logos/Tesla.png' },
+  { name: 'TK Architects International', src: '/assets/logos/TK Architects International.png' },
+  { name: 'Wade Trim', src: '/assets/logos/Wade Trim.png' },
+  // add the rest...
+];
 
   const testimonials = [
     { quote: 'Curtis delivered a pyRevit suite that instantly saved our team hours every week. The validation checks alone paid for the engagement in the first month.', author: 'PM, Industrial Project (confidential)' },
@@ -195,64 +241,119 @@ useEffect(() => {
       {route === 'home' && (
         <>
           {/* HERO */}
-          <section className="relative overflow-hidden">
-            <div className="absolute inset-0 -z-10 [mask-image:radial-gradient(60%_40%_at_50%_0%,black,transparent)] bg-gradient-to-b from-indigo-500/20 via-fuchsia-500/10 to-transparent" />
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 md:py-28 grid md:grid-cols-12 gap-10">
-              <div className="md:col-span-7">
-                <p className="text-xs uppercase tracking-[0.2em] text-white/60">Structural BIM • Dev • Automation</p>
-                <h1 className="mt-4 text-4xl/tight md:text-6xl/tight font-semibold">Structural BIM + Automation that saves hours.</h1>
-                <p className="mt-5 text-lg text-white/80 max-w-2xl">Revit tooling, analysis handoffs, and dashboards that cut friction—pyRevit/C# scripts, data pipelines, and QA/QC checks that teams actually use.</p>
+          <section
+            ref={heroRef}
+            className="relative overflow-hidden bg-grid min-h-[80vh] flex items-center"
+          >
+            {/* Background overlays */}
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-56 md:h-72 bg-gradient-to-b from-transparent via-transparent to-[hsl(var(--bg))/0.92]" />
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-24 blur-2xl bg-[radial-gradient(120%_100%_at_50%_0%,transparent_0%,transparent_60%,hsl(var(--bg))/0.9_100%)]" />
+
+            {/* Content wrapper */}
+            <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-10 px-6 py-20 lg:px-8 md:grid-cols-12">
+              {/* LEFT: Text column */}
+              <div className="md:col-span-6"> {/* was md:col-span-7 */}
+                <p className="text-xs uppercase tracking-[0.2em] text-white/60">
+                  Structural BIM • Dev • Automation
+                </p>
+
+                <h1 className="mt-4 text-4xl/tight md:text-6xl/tight font-semibold">
+                  Structural BIM + Automation that saves hours.
+                </h1>
+
+                <p className="mt-5 text-lg text-white/80 max-w-2xl">
+                  Revit tooling, analysis handoffs, and dashboards that cut friction—
+                  pyRevit/C# scripts, data pipelines, and QA/QC checks that teams actually use.
+                </p>
+
                 <div className="mt-8 flex flex-wrap gap-3">
-                  <a href="contact" className="inline-flex items-center rounded-2xl bg-white text-neutral-900 px-5 py-3 font-medium hover:opacity-90 transition">Book a 15‑min consult</a>
-                  <a href="work" className="inline-flex items-center rounded-2xl border border-white/20 px-5 py-3 font-medium hover:bg-white/10 transition">See case studies</a>
+                  <a
+                    href="contact"
+                    className="inline-flex items-center rounded-2xl bg-white text-neutral-900 px-5 py-3 font-medium hover:opacity-90 transition"
+                  >
+                    Book a 15-min consult
+                  </a>
+                  <a
+                    href="work"
+                    className="inline-flex items-center rounded-2xl border border-white/20 px-5 py-3 font-medium hover:bg-white/10 transition"
+                  >
+                    See case studies
+                  </a>
                 </div>
+
                 <div className="mt-10 flex flex-wrap gap-2 text-xs">
-                  {['Revit API (C#)','pyRevit','Dynamo','Python','ETABS / RISA / RAM','Power BI','Next.js'].map(t => (
-                    <span key={t} className="rounded-full border border-white/15 bg-white/5 px-3 py-1 text-white/80">{t}</span>
+                  {[
+                    'Revit API (C#)',
+                    'pyRevit',
+                    'Dynamo',
+                    'Python',
+                    'ETABS / RISA / RAM',
+                    'Power BI',
+                    'Next.js',
+                  ].map((t) => (
+                    <span
+                      key={t}
+                      className="rounded-full border border-white/15 bg-white/5 px-3 py-1 text-white/80"
+                    >
+                      {t}
+                    </span>
                   ))}
                 </div>
               </div>
-              <div className="md:col-span-5">
-                <div ref={heroRef} className="relative h-72 md:h-full rounded-3xl border border-white/10 overflow-hidden">
+
+              {/* RIGHT: Hero video */}
+              <div className="relative z-20 md:col-span-6">  {/* was md:col-span-5 */}
+                <div className="relative aspect-[21/9] lg:aspect-[2/1] overflow-hidden rounded-3xl border border-white/10 bg-black shadow-xl"> {/* ...video/img stays the same... */}
                   {canAutoplay && HAS_VIDEO_SOURCES ? (
                     <video
                       ref={heroVideoRef}
-                      className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${heroReady ? 'opacity-100' : 'opacity-0'}`}
-                      autoPlay muted loop playsInline preload="auto" poster={HERO_POSTER_SRC || undefined}
+                      className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
+                        heroReady ? 'opacity-100' : 'opacity-0'
+                      }`}
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      preload="auto"
+                      poster={HERO_POSTER_SRC || undefined}
                       onCanPlay={() => setHeroReady(true)}
-                      aria-hidden="true"
                     >
                       {HERO_VIDEO_SRC_MOBILE && (
-                        <source src={HERO_VIDEO_SRC_MOBILE} media="(max-width: 767px)" type="video/mp4" />
+                        <source
+                          src={HERO_VIDEO_SRC_MOBILE}
+                          media="(max-width: 767px)"
+                          type="video/mp4"
+                        />
                       )}
                       {(HERO_VIDEO_SRC_DESKTOP || HERO_VIDEO_SRC) && (
-                        <source src={HERO_VIDEO_SRC_DESKTOP || HERO_VIDEO_SRC} type="video/mp4" />
+                        <source
+                          src={HERO_VIDEO_SRC_DESKTOP || HERO_VIDEO_SRC}
+                          type="video/mp4"
+                        />
                       )}
                     </video>
                   ) : (
-                    <img src={HERO_POSTER_SRC} alt="Portfolio trailer preview" className="absolute inset-0 h-full w-full object-cover" />
+                    <img
+                      src={HERO_POSTER_SRC}
+                      alt="Portfolio trailer preview"
+                      className="absolute inset-0 h-full w-full object-cover"
+                    />
                   )}
+
                   <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent" />
-                  <div className="absolute inset-0 pointer-events-none ring-1 ring-white/10 rounded-3xl" />
+                  <div className="absolute inset-0 pointer-events-none rounded-3xl ring-1 ring-white/10" />
                 </div>
+
+                <p className="mt-3 text-center text-xs text-white/70">
+                  Portfolio trailer preview
+                </p>
               </div>
             </div>
-          </section>
+            {/* ^^^ This closes the content wrapper grid */}
 
-          {/* HIGHLIGHTS */}
-          <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-6 -mt-12">
-            <div className="grid gap-4 md:grid-cols-3">
-              {[
-                { title: 'pyRevit Tooling', desc: 'Parameter validators, sheet creators, exporters, view templates.' },
-                { title: 'Revit ⇄ Analysis', desc: 'ETABS/RAM/RISA handoffs, QA/QC scripts, delta checkers.' },
-                { title: 'Dashboards', desc: 'Model health, clashes by trade/level, issue aging (Power BI).' },
-              ].map((c) => (
-                <div key={c.title} className="rounded-3xl border border-white/10 bg-white/[0.03] p-6">
-                  <h3 className="font-semibold text-lg">{c.title}</h3>
-                  <p className="mt-2 text-white/75 text-sm">{c.desc}</p>
-                  <div className="mt-4 h-24 rounded-2xl border border-white/10 bg-gradient-to-tr from-white/10 to-transparent" />
-                </div>
-              ))}
+            {/* Scroll cue (optional) */}
+            <div className="pointer-events-none absolute bottom-6 left-1/2 -translate-x-1/2 text-white/60 text-xs animate-bounce">
+              ↓ Scroll
             </div>
           </section>
 
@@ -668,3 +769,5 @@ function CompaniesBlock({ companies }: { companies: CompanyLogo[] }){
     </div>
   );
 }
+
+
