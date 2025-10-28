@@ -493,7 +493,7 @@ function BioBlock() {
       <img
         src="/headshots/curtis.png"
         alt="Curtis Bolden"
-        className="h-full w-full object-cover"
+        className="rounded-3xl border border-white/10 aspect-square object-cover w-full bg-black/20"
         loading="lazy"
         onError={(e) => {
           const box = e.currentTarget.parentElement;
