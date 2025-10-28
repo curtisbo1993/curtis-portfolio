@@ -361,38 +361,36 @@ export default function AppShell() {
           {/* ABOUT TEASER */}
           <section id="about" data-reveal data-delay="240ms" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
             <div className="grid md:grid-cols-2 gap-10 items-center">
+              {/* LEFT: text */}
               <div>
                 <h2 className="text-2xl md:text-3xl font-semibold">About</h2>
                 <p className="mt-4 text-white/80">
                   I’m Curtis Bolden, a Structural BIM/VDC specialist and developer. I create reliable tools and
                   workflows that help teams deliver faster with fewer RFIs.
                 </p>
-                <a href="/about" className="mt-6 inline-flex text-sm rounded-xl border border-white/15 px-4 py-2 hover:bg-white/10">Open full About →</a>
+                <a
+                  href="/about"
+                  className="mt-6 inline-flex text-sm rounded-xl border border-white/15 px-4 py-2 hover:bg-white/10"
+                >
+                  Open full About →
+                </a>
               </div>
+
+              {/* RIGHT: headshot with accent card */}
               <div className="relative">
-                <div className="aspect-square rounded-3xl border border-white/10 bg-gradient-to-br from-fuchsia-400/20 to-indigo-400/20" />
-                <div className="absolute -bottom-6 -left-6 w-40 h-28 rounded-xl border border-white/20 bg-white/10" />
+                <img
+                  src="/headshots/curtis.png"
+                  alt="Curtis Bolden headshot"
+                  className="aspect-square w-full rounded-3xl border border-white/10 object-cover bg-black/20"
+                  loading="eager"
+                  decoding="async"
+                />
+                {/* soft accent card (kept INSIDE the relative wrapper) */}
+                <div className="absolute -bottom-6 -left-6 h-28 w-40 rounded-xl border border-white/20 bg-white/10 backdrop-blur" />
               </div>
             </div>
           </section>
 
-          <TestimonialsCarousel items={testimonials} />
-
-          {/* CONTACT CTA */}
-          <section id="contact" data-reveal data-delay="360ms" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
-            <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-white/10 to-transparent p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-6">
-              <div>
-                <h3 className="text-2xl font-semibold">Let’s get you hours back every week.</h3>
-                <p className="text-white/80 mt-2">Short discovery call → scoped plan → delivery you can measure.</p>
-              </div>
-              <div className="flex gap-3">
-                <a href="/contact" className="rounded-2xl bg-white text-neutral-900 px-5 py-3 font-medium hover:opacity-90">Book consult</a>
-                <a href="mailto:curtis@example.com" className="rounded-2xl border border-white/20 px-5 py-3 font-medium hover:bg-white/10">Email me</a>
-              </div>
-            </div>
-          </section>
-        </>
-      )}
 
       {/* NON-HOME ROUTES */}
       {route !== "home" && (
@@ -491,25 +489,24 @@ function AboutTabs({ toolLogos, companies }: { toolLogos: ToolLogo[]; companies:
 
 function BioBlock() {
   return (
-    <div className="mt-6 grid md:grid-cols-2 gap-10 items-start">
-      <div>
-        <h2 className="text-2xl font-semibold">Bio</h2>
-        <p className="mt-3 text-white/80">
-          I’m Curtis Bolden, a Structural BIM/VDC specialist and developer. I build pyRevit/C# tooling, dynamo graphs,
-          and analysis handoffs that reduce friction and create measurable outcomes for project teams.
-        </p>
-        <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
-          {["10+ yrs AEC/BIM", "pyRevit/C# dev", "Analysis handoffs", "Dashboards & QA/QC"].map((k) => (
-            <div key={k} className="rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3">
-              {k}
-            </div>
-          ))}
-        </div>
-      </div>
-      <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-fuchsia-400/20 to-indigo-400/20 aspect-square" />
+    <div className="rounded-3xl border border-white/10 overflow-hidden aspect-square">
+      <img
+        src="/headshots/curtis.png"
+        alt="Curtis Bolden"
+        className="h-full w-full object-cover"
+        loading="lazy"
+        onError={(e) => {
+          const box = e.currentTarget.parentElement;
+          if (box) {
+            box.className =
+              "rounded-3xl border border-white/10 bg-gradient-to-br from-fuchsia-400/20 to-indigo-400/20 aspect-square";
+            e.currentTarget.remove();
+          }
+        }}
+      />
     </div>
-  );
-}
+      );
+    }
 
 function SkillsBlock({ toolLogos }: { toolLogos: ToolLogo[] }) {
   return (
