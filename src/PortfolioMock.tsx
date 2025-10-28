@@ -230,11 +230,6 @@ export default function AppShell() {
     else v.pause();
   }, [canAutoplay, HAS_VIDEO_SOURCES, heroVisible]);
 
-    return (
-  <ErrorBoundary>
-    <div className="min-h-screen bg-neutral-950 text-neutral-100 antialiased">
-      <SkipToContent />
-
       {/* Header */}
       <header className="sticky top-0 z-50 backdrop-blur supports-[backdrop-filter]:bg-neutral-950/70 border-b border-white/10">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
@@ -255,159 +250,167 @@ export default function AppShell() {
       </header>
 
       {/* HOME */}
-      {route === "home" && (
-        <>
-          {/* HERO */}
-          <section ref={heroRef} data-reveal className="relative overflow-hidden bg-grid min-h-[86vh] flex items-center">
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-64 md:h-80 bg-gradient-to-b from-transparent via-transparent to-black/80" />
+{route === "home" && (
+  <>
+    {/* HERO */}
+    <section ref={heroRef} data-reveal className="relative overflow-hidden bg-grid min-h-[86vh] flex items-center">
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-64 md:h-80 bg-gradient-to-b from-transparent via-transparent to-black/80" />
 
-            <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-10 px-6 py-20 lg:px-8 md:grid-cols-12">
-              {/* LEFT */}
-              <div className="md:col-span-6">
-                <p className="text-xs uppercase tracking-[0.2em] text-white/60">Structural BIM • Dev • Automation</p>
-                <h1 className="mt-4 text-4xl/tight font-semibold md:text-6xl/tight">
-                  Structural BIM + Automation that saves hours.
-                </h1>
-                <p className="mt-5 max-w-2xl text-lg text-white/80">
-                  Revit tooling, analysis handoffs, and dashboards that cut friction—pyRevit/C# scripts, data pipelines,
-                  and QA/QC checks that teams actually use.
-                </p>
-                <div className="mt-8 flex flex-wrap gap-3">
-                  <a href="/contact" className="inline-flex items-center rounded-2xl bg-white px-5 py-3 font-medium text-neutral-900 transition hover:opacity-90">
-                    Book a 15-min consult
-                  </a>
-                  <a href="/work" className="inline-flex items-center rounded-2xl border border-white/20 px-5 py-3 font-medium transition hover:bg-white/10">
-                    See case studies
-                  </a>
-                </div>
-              </div>
-
-              {/* RIGHT: video */}
-              <div className="relative md:col-span-6">
-                <div className="relative aspect-[16/9] overflow-hidden rounded-3xl border border-white/10 bg-black shadow-2xl md:scale-[1.07] md:translate-x-2 md:-translate-y-1">
-                  {canAutoplay && HAS_VIDEO_SOURCES ? (
-                    <video
-                      ref={heroVideoRef}
-                      className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${heroReady ? "opacity-100" : "opacity-0"}`}
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
-                      preload="auto"
-                      poster={HERO_POSTER_SRC || undefined}
-                      onCanPlay={() => setHeroReady(true)}
-                    >
-                      {HERO_VIDEO_SRC_MOBILE && (
-                        <source src={HERO_VIDEO_SRC_MOBILE} media="(max-width: 767px)" type="video/mp4" />
-                      )}
-                      {(HERO_VIDEO_SRC_DESKTOP || HERO_VIDEO_SRC) && (
-                        <source src={HERO_VIDEO_SRC_DESKTOP || HERO_VIDEO_SRC} type="video/mp4" />
-                      )}
-                    </video>
-                  ) : (
-                    <img src={HERO_POSTER_SRC} alt="Portfolio trailer preview" className="absolute inset-0 h-full w-full object-cover" />
-                  )}
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent" />
-                  <div className="pointer-events-none absolute inset-0 rounded-3xl ring-1 ring-white/10" />
-                </div>
-                <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 text-white/60 text-xs animate-bounce">↓ Scroll</div>
-              </div>
-            </div>
-          </section>
-
-          {/* SERVICES */}
-          <section id="services" data-reveal data-delay="120ms" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
-            <div className="flex items-end justify-between">
-              <div>
-                <h2 className="text-2xl md:text-3xl font-semibold">Productized Services</h2>
-                <p className="text-white/70 mt-2">Clear scope, timeline, and deliverables focused on outcomes.</p>
-              </div>
-              <a href="/services" className="text-sm rounded-xl border border-white/15 px-4 py-2 hover:bg-white/10">View all</a>
-            </div>
-
-            <div className="relative mt-6">
-              <div className="absolute -left-3 top-1/2 -translate-y-1/2 z-10 hidden md:block">
-                <button onClick={() => scrollServices(-1)} className="rounded-full border border-white/20 bg-white/10 backdrop-blur px-3 py-2 hover:bg-white/20">‹</button>
-              </div>
-              <div className="absolute -right-3 top-1/2 -translate-y-1/2 z-10 hidden md:block">
-                <button onClick={() => scrollServices(1)} className="rounded-full border border-white/20 bg-white/10 backdrop-blur px-3 py-2 hover:bg-white/20">›</button>
-              </div>
-
-              <div ref={servicesRef} className="mt-2 flex gap-6 overflow-hidden snap-x snap-mandatory pb-2 hide-scrollbar">
-                {services.map((s) => (
-                  <div key={s.name} className="snap-start shrink-0 w-[320px] rounded-3xl border border-white/10 bg-white/[0.03] p-6 flex flex-col">
-                    <div className="flex items-center justify-between gap-2">
-                      <h3 className="font-semibold text-lg">{s.name}</h3>
-                      <span className="text-xs text-white/60">{s.time}</span>
-                    </div>
-                    <ul className="mt-4 space-y-2 text-sm text-white/80">
-                      {s.bullets.map((b) => (
-                        <li key={b} className="flex items-start gap-2">
-                          <span className="mt-1 h-1.5 w-1.5 rounded-full bg-white/60" />
-                          {b}
-                        </li>
-                      ))}
-                    </ul>
-                    <div className="mt-6 flex items-center justify-between">
-                      <span className="text-white/90 font-medium">{s.price}</span>
-                      <a href="/contact" className="rounded-xl border border-white/15 px-4 py-2 text-sm hover:bg-white/10">Start</a>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          {/* ABOUT TEASER */}
-          <section id="about" data-reveal data-delay="240ms" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
-            <div className="grid md:grid-cols-2 gap-10 items-center">
-              {/* LEFT: text */}
-              <div>
-                <h2 className="text-2xl md:text-3xl font-semibold">About</h2>
-                <p className="mt-4 text-white/80">
-                  I’m Curtis Bolden, a Structural BIM/VDC specialist and developer. I create reliable tools and
-                  workflows that help teams deliver faster with fewer RFIs.
-                </p>
-                <a
-                  href="/about"
-                  className="mt-6 inline-flex text-sm rounded-xl border border-white/15 px-4 py-2 hover:bg-white/10"
-                >
-                  Open full About →
-                </a>
-              </div>
-
-              {/* RIGHT: headshot with accent card */}
-              <div className="relative">
-                <img
-                  src="/headshots/curtis.png"
-                  alt="Curtis Bolden headshot"
-                  className="aspect-square w-full rounded-3xl border border-white/10 object-cover bg-black/20"
-                  loading="eager"
-                  decoding="async"
-                />
-                {/* soft accent card (kept INSIDE the relative wrapper) */}
-                <div className="absolute -bottom-6 -left-6 h-28 w-40 rounded-xl border border-white/20 bg-white/10 backdrop-blur" />
-              </div>
-            </div>
-          </section>
-
-
-      {/* NON-HOME ROUTES */}
-      {route !== "home" && (
-        <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20">
-          <h1 className="text-3xl md:text-4xl font-semibold capitalize">{route.replace(":", " / ")}</h1>
-          <p className="text-white/70 mt-2 max-w-2xl">
-            This is a placeholder page in the mock router. Navigate back with the header links.
+      <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-10 px-6 py-20 lg:px-8 md:grid-cols-12">
+        {/* LEFT */}
+        <div className="md:col-span-6">
+          <p className="text-xs uppercase tracking-[0.2em] text-white/60">Structural BIM • Dev • Automation</p>
+          <h1 className="mt-4 text-4xl/tight font-semibold md:text-6xl/tight">
+            Structural BIM + Automation that saves hours.
+          </h1>
+          <p className="mt-5 max-w-2xl text-lg text-white/80">
+            Revit tooling, analysis handoffs, and dashboards that cut friction—pyRevit/C# scripts, data pipelines,
+            and QA/QC checks that teams actually use.
           </p>
-          {route === "about" && <AboutTabs toolLogos={toolLogos} companies={companies} />}
-        </section>
-      )}
+          <div className="mt-8 flex flex-wrap gap-3">
+            <a href="/contact" className="inline-flex items-center rounded-2xl bg-white px-5 py-3 font-medium text-neutral-900 transition hover:opacity-90">
+              Book a 15-min consult
+            </a>
+            <a href="/work" className="inline-flex items-center rounded-2xl border border-white/20 px-5 py-3 font-medium transition hover:bg-white/10">
+              See case studies
+            </a>
+          </div>
+        </div>
 
-      <Footer />
-    </div>
-  </ErrorBoundary>
-);
-}
+        {/* RIGHT: video */}
+        <div className="relative md:col-span-6">
+          <div className="relative aspect-[16/9] overflow-hidden rounded-3xl border border-white/10 bg-black shadow-2xl md:scale-[1.07] md:translate-x-2 md:-translate-y-1">
+            {canAutoplay && HAS_VIDEO_SOURCES ? (
+              <video
+                ref={heroVideoRef}
+                className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${heroReady ? "opacity-100" : "opacity-0"}`}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="auto"
+                poster={HERO_POSTER_SRC || undefined}
+                onCanPlay={() => setHeroReady(true)}
+              >
+                {HERO_VIDEO_SRC_MOBILE && (
+                  <source src={HERO_VIDEO_SRC_MOBILE} media="(max-width: 767px)" type="video/mp4" />
+                )}
+                {(HERO_VIDEO_SRC_DESKTOP || HERO_VIDEO_SRC) && (
+                  <source src={HERO_VIDEO_SRC_DESKTOP || HERO_VIDEO_SRC} type="video/mp4" />
+                )}
+              </video>
+            ) : (
+              <img src={HERO_POSTER_SRC} alt="Portfolio trailer preview" className="absolute inset-0 h-full w-full object-cover" />
+            )}
+            <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent" />
+            <div className="pointer-events-none absolute inset-0 rounded-3xl ring-1 ring-white/10" />
+          </div>
+          <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 text-white/60 text-xs animate-bounce">↓ Scroll</div>
+        </div>
+      </div>
+    </section>
+
+    {/* SERVICES */}
+    <section id="services" data-reveal data-delay="120ms" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
+      <div className="flex items-end justify-between">
+        <div>
+          <h2 className="text-2xl md:text-3xl font-semibold">Productized Services</h2>
+          <p className="text-white/70 mt-2">Clear scope, timeline, and deliverables focused on outcomes.</p>
+        </div>
+        <a href="/services" className="text-sm rounded-xl border border-white/15 px-4 py-2 hover:bg-white/10">View all</a>
+      </div>
+
+      <div className="relative mt-6">
+        <div className="absolute -left-3 top-1/2 -translate-y-1/2 z-10 hidden md:block">
+          <button onClick={() => scrollServices(-1)} className="rounded-full border border-white/20 bg-white/10 backdrop-blur px-3 py-2 hover:bg-white/20">
+            ‹
+          </button>
+        </div>
+        <div className="absolute -right-3 top-1/2 -translate-y-1/2 z-10 hidden md:block">
+          <button onClick={() => scrollServices(1)} className="rounded-full border border-white/20 bg-white/10 backdrop-blur px-3 py-2 hover:bg-white/20">
+            ›
+          </button>
+        </div>
+
+        {/* no user-scrollbar; only side buttons */}
+        <div ref={servicesRef} className="mt-2 flex gap-6 overflow-hidden snap-x snap-mandatory pb-2 hide-scrollbar">
+          {services.map((s) => (
+            <div key={s.name} className="snap-start shrink-0 w-[320px] rounded-3xl border border-white/10 bg-white/[0.03] p-6 flex flex-col">
+              <div className="flex items-center justify-between gap-2">
+                <h3 className="font-semibold text-lg">{s.name}</h3>
+                <span className="text-xs text-white/60">{s.time}</span>
+              </div>
+              <ul className="mt-4 space-y-2 text-sm text-white/80">
+                {s.bullets.map((b) => (
+                  <li key={b} className="flex items-start gap-2">
+                    <span className="mt-1 h-1.5 w-1.5 rounded-full bg-white/60" />
+                    {b}
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-6 flex items-center justify-between">
+                <span className="text-white/90 font-medium">{s.price}</span>
+                <a href="/contact" className="rounded-xl border border-white/15 px-4 py-2 text-sm hover:bg-white/10">Start</a>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* ABOUT TEASER (with headshot) */}
+    <section id="about" data-reveal data-delay="240ms" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
+      <div className="grid md:grid-cols-2 gap-10 items-center">
+        <div>
+          <h2 className="text-2xl md:text-3xl font-semibold">About</h2>
+          <p className="mt-4 text-white/80">
+            I’m Curtis Bolden, a Structural BIM/VDC specialist and developer. I create reliable tools and
+            workflows that help teams deliver faster with fewer RFIs.
+          </p>
+          <a href="/about" className="mt-6 inline-flex text-sm rounded-xl border border-white/15 px-4 py-2 hover:bg-white/10">
+            Open full About →
+          </a>
+        </div>
+
+        {/* Headshot box */}
+        <div className="relative">
+          <img
+            src="/headshots/curtis.png"
+            alt="Curtis Bolden headshot"
+            className="aspect-square rounded-3xl border border-white/10 object-cover w-full bg-black/20"
+            loading="eager"
+            decoding="async"
+            onError={(e) => {
+              const box = e.currentTarget.parentElement;
+              if (box) {
+                box.innerHTML = "";
+                box.className =
+                  "relative aspect-square rounded-3xl border border-white/10 bg-gradient-to-br from-fuchsia-400/20 to-indigo-400/20";
+              }
+            }}
+          />
+          <div className="absolute -bottom-6 -left-6 w-40 h-28 rounded-xl border border-white/20 bg-white/10" />
+        </div>
+      </div>
+    </section>
+
+    <TestimonialsCarousel items={testimonials} />
+
+    {/* CONTACT CTA */}
+    <section id="contact" data-reveal data-delay="360ms" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
+      <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-white/10 to-transparent p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div>
+          <h3 className="text-2xl font-semibold">Let’s get you hours back every week.</h3>
+          <p className="text-white/80 mt-2">Short discovery call → scoped plan → delivery you can measure.</p>
+        </div>
+        <div className="flex gap-3">
+          <a href="/contact" className="rounded-2xl bg-white text-neutral-900 px-5 py-3 font-medium hover:opacity-90">Book consult</a>
+          <a href="mailto:curtis@example.com" className="rounded-2xl border border-white/20 px-5 py-3 font-medium hover:bg-white/10">Email me</a>
+        </div>
+      </div>
+    </section>
+  </>
+)}
 
 /* ========================== Subcomponents ================================ */
 
@@ -489,24 +492,40 @@ function AboutTabs({ toolLogos, companies }: { toolLogos: ToolLogo[]; companies:
 
 function BioBlock() {
   return (
-    <div className="rounded-3xl border border-white/10 overflow-hidden aspect-square">
-      <img
-        src="/headshots/curtis.png"
-        alt="Curtis Bolden"
-        className="rounded-3xl border border-white/10 aspect-square object-cover w-full bg-black/20"
-        loading="lazy"
-        onError={(e) => {
-          const box = e.currentTarget.parentElement;
-          if (box) {
-            box.className =
-              "rounded-3xl border border-white/10 bg-gradient-to-br from-fuchsia-400/20 to-indigo-400/20 aspect-square";
-            e.currentTarget.remove();
-          }
-        }}
-      />
+    <div className="mt-6 grid md:grid-cols-2 gap-10 items-start">
+      <div>
+        <h2 className="text-2xl font-semibold">Bio</h2>
+        <p className="mt-3 text-white/80">
+          I’m Curtis Bolden, a Structural BIM/VDC specialist and developer. I build pyRevit/C# tooling, dynamo graphs,
+          and analysis handoffs that reduce friction and create measurable outcomes for project teams.
+        </p>
+        <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
+          {["10+ yrs AEC/BIM", "pyRevit/C# dev", "Analysis handoffs", "Dashboards & QA/QC"].map((k) => (
+            <div key={k} className="rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3">{k}</div>
+          ))}
+        </div>
+      </div>
+
+      <div className="relative">
+        <img
+          src="/headshots/curtis.png"
+          alt="Curtis Bolden"
+          className="aspect-square rounded-3xl border border-white/10 object-cover w-full bg-black/20"
+          loading="lazy"
+          onError={(e) => {
+            const box = e.currentTarget.parentElement;
+            if (box) {
+              box.innerHTML = "";
+              box.className =
+                "relative aspect-square rounded-3xl border border-white/10 bg-gradient-to-br from-fuchsia-400/20 to-indigo-400/20";
+            }
+          }}
+        />
+        <div className="absolute -bottom-6 -left-6 w-40 h-28 rounded-xl border border-white/20 bg-white/10" />
+      </div>
     </div>
-      );
-    }
+  );
+}
 
 function SkillsBlock({ toolLogos }: { toolLogos: ToolLogo[] }) {
   return (
