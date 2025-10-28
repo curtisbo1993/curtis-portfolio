@@ -230,6 +230,11 @@ export default function AppShell() {
     else v.pause();
   }, [canAutoplay, HAS_VIDEO_SOURCES, heroVisible]);
 
+    return (
+    <ErrorBoundary>
+      <div className="min-h-screen bg-neutral-950 text-neutral-100 antialiased">
+        <SkipToContent />
+
       {/* Header */}
       <header className="sticky top-0 z-50 backdrop-blur supports-[backdrop-filter]:bg-neutral-950/70 border-b border-white/10">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
@@ -249,7 +254,7 @@ export default function AppShell() {
         </div>
       </header>
 
-      {/* HOME */}
+{/* HOME */}
 {route === "home" && (
   <>
     {/* HERO */}
@@ -377,7 +382,7 @@ export default function AppShell() {
           <img
             src="/headshots/curtis.png"
             alt="Curtis Bolden headshot"
-            className="aspect-square rounded-3xl border border-white/10 object-cover w-full bg-black/20"
+            className="aspect-square rounded-3xl border border-white/10 object-cover object-top w-full bg-black/20"
             loading="eager"
             decoding="async"
             onError={(e) => {
@@ -411,6 +416,23 @@ export default function AppShell() {
     </section>
   </>
 )}
+
+{/* NON-HOME ROUTES */}
+{route !== "home" && (
+  <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20">
+    <h1 className="text-3xl md:text-4xl font-semibold capitalize">{route.replace(":", " / ")}</h1>
+    <p className="text-white/70 mt-2 max-w-2xl">
+      This is a placeholder page in the mock router. Navigate back with the header links.
+    </p>
+    {route === "about" && <AboutTabs toolLogos={toolLogos} companies={companies} />}
+  </section>
+)}
+
+<Footer />
+</div>
+</ErrorBoundary>
+);
+}
 
 /* ========================== Subcomponents ================================ */
 
