@@ -333,7 +333,7 @@ export default function AppShell() {
                 <button onClick={() => scrollServices(1)} className="rounded-full border border-white/20 bg-white/10 backdrop-blur px-3 py-2 hover:bg-white/20">›</button>
               </div>
 
-              <div ref={servicesRef} className="mt-2 flex gap-6 overflow-x-auto snap-x snap-mandatory pb-2 hide-scrollbar" style={{ WebkitOverflowScrolling: "touch" }}>
+              <div ref={servicesRef} className="mt-2 flex gap-6 overflow-hidden snap-x snap-mandatory pb-2 hide-scrollbar">
                 {services.map((s) => (
                   <div key={s.name} className="snap-start shrink-0 w-[320px] rounded-3xl border border-white/10 bg-white/[0.03] p-6 flex flex-col">
                     <div className="flex items-center justify-between gap-2">
