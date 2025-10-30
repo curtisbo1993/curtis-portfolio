@@ -1,9 +1,13 @@
 // src/PortfolioMock.tsx
 // @ts-nocheck
 import React, { useEffect, useState, useRef } from "react";
-import { useReveal } from "@/hooks/useReveal";
-import SkipToContent from "@/components/SkipToContent";
-import Footer from "@/components/Footer";
+import { useReveal } from "./hooks/useReveal";
+import SkipToContent from "./components/SkipToContent";
+import Footer from "./components/Footer";
+import WorkPage from "@/pages/Work";
+import ContactPage from "./pages/Contact";
+import WorkDetail from "@/pages/WorkDetail";
+import SEO from "./components/SEO";
 
 /* -------------------- ErrorBoundary -------------------- */
 class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean }> {
@@ -18,15 +22,22 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { has
     console.error("App crashed:", err);
   }
   render() {
-    if (this.state.hasError) {
-      return (
-        <div style={{ color: "#fff", padding: 24 }}>
-          <h2>Something went wrong.</h2>
-          <p>Open DevTools → Console for the error details.</p>
-        </div>
-      );
-    }
-    return this.props.children;
+  if (this.state.hasError) {
+    return (
+      <div style={{
+        background: "#0a0a0a",
+        color: "#fff",
+        minHeight: "100vh",
+        padding: 24,
+        fontFamily: "ui-sans-serif, system-ui"
+      }}>
+        <h2 style={{fontSize: 20, marginBottom: 8}}>Something went wrong.</h2>
+        <p>Open DevTools → Console for details.</p>
+      </div>
+    );
+  }
+  return this.props.children;
+
   }
 }
 
@@ -47,9 +58,29 @@ function NavLink(props: React.AnchorHTMLAttributes<HTMLAnchorElement>) {
   );
 }
 
+// Helper: decides if a link is "active" based on current route
+function isActive(href: string, route: RouteKey) {
+  if (href === "/") return route === "home";
+  if (href === "/work") return route === "work" || route.startsWith("work:");
+  if (href === "/services") return route === "services";
+  if (href === "/tools") return route === "tools";
+  if (href === "/about") return route === "about";
+  if (href === "/contact") return route === "contact";
+  return false;
+}
+
 /* ----------------------------- Types ------------------------------------- */
 type TabKey = "model" | "drawings" | "gallery" | "video";
-type RouteKey = "home" | "work" | "services" | "tools" | "about" | "work:pyrevit";
+type RouteKey =
+  | "home"
+  | "work"
+  | "services"
+  | "tools"
+  | "about"
+  | "contact"
+  | "work:pyrevit"
+  | `work:${string}`; // NEW: generic slug
+
 type ToolLogo = {
   name: string;
   src?: string;
@@ -63,6 +94,72 @@ type CompanyLogo = { name: string; src?: string };
 export default function AppShell() {
   // Router state (single instance)
   const [route, setRoute] = useState<RouteKey>("home");
+
+  // Scroll-to-top + focus target
+const mainRef = useRef<HTMLElement | null>(null);
+
+useEffect(() => {
+  // when route changes, go to top and move focus to main for screen readers
+  queueMicrotask(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    mainRef.current?.focus({ preventScroll: true });
+  });
+}, [route]);
+
+// Compute SEO for current route
+function getSeoForRoute(route: RouteKey) {
+  // Default
+  let title = "CB Design Consultants — Structural BIM • Dev • Automation";
+  let description =
+    "Structural BIM/VDC + automation: pyRevit/C# tools, analysis handoffs, and dashboards that save teams hours.";
+  let image = "/thumbnail.jpg";
+
+  if (route === "home") {
+    // keep defaults or customize
+  } else if (route === "work") {
+    title = "Work — Case Studies | CB Design Consultants";
+    description = "Selected projects with measurable outcomes in BIM automation, analysis handoffs, and coordination.";
+  } else if (route.startsWith("work:")) {
+    const slug = route.split(":")[1];
+    if (slug === "pyrevit-sheet-suite") {
+      title = "pyRevit Sheet Suite — Case Study | CB Design Consultants";
+      description =
+        "A focused pyRevit toolset that automates sheet creation, naming, and QA checks—hours saved weekly.";
+      image = "/assets/work/pyrevit-sheet-suite/og.jpg";
+    } else {
+      // Generic work detail
+      title = `${slug.replace(/-/g, " ")} — Case Study | CB Design Consultants`;
+      description = "Project details, outcomes, and lessons learned.";
+      image = "/thumbnail.jpg";
+    }
+  } else if (route === "services") {
+    title = "Services — Productized BIM/Dev | CB Design Consultants";
+    description = "Clear scope and deliverables: automation sprints, Revit↔Analysis sync, dashboards, and more.";
+  } else if (route === "tools") {
+    title = "Tools — pyRevit, Dynamo, Exporters | CB Design Consultants";
+    description = "Reusable tools and validators that reduce manual work and prevent data loss.";
+  } else if (route === "about") {
+    title = "About — Curtis Bolden | CB Design Consultants";
+    description = "Structural BIM/VDC specialist and developer—skills, background, and companies supported.";
+  } else if (route === "contact") {
+    title = "Contact — Book a Consult | CB Design Consultants";
+    description = "Quick discovery call to map problems → outcomes. Let’s get you hours back every week.";
+  }
+
+  return { title, description, image };
+}
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "CB Design Consultants",
+  url: "https://www.cb-designconsultants.com",
+  logo: "/assets/brand/co-logo-white.png",
+  sameAs: [
+    "https://www.linkedin.com/in/curtisaboldenjr/",
+    // add other profiles as you create them
+  ],
+};
 
   // If you actually have this hook file, keep it; otherwise delete this line.
   useReveal("[data-reveal]", route);
@@ -95,26 +192,48 @@ export default function AppShell() {
   }, []);
 
   // Router (path-based with graceful #/about → /about migration)
-  useEffect(() => {
-    const parse = () => {
-      const hash = window.location.hash.replace("#", "");
-      if (hash.startsWith("/")) history.replaceState(null, "", hash);
+useEffect(() => {
+  const parse = () => {
+    // 1) migrate hash routes like #/about → /about
+    const hash = window.location.hash.replace("#", "");
+    if (hash.startsWith("/")) history.replaceState(null, "", hash);
 
-      const p = window.location.pathname;
-      if (!p || p === "/") setRoute("home");
-      else if (p.startsWith("/work/pyrevit-sheet-suite")) setRoute("work:pyrevit");
-      else if (p.startsWith("/work")) setRoute("work");
-      else if (p.startsWith("/services")) setRoute("services");
-      else if (p.startsWith("/tools")) setRoute("tools");
-      else if (p.startsWith("/about")) setRoute("about");
-      else setRoute("home");
-    };
+    // 2) get pathname ONCE, before any checks
+    const p = window.location.pathname;
 
-    parse();
-    window.addEventListener("popstate", parse);
-    return () => window.removeEventListener("popstate", parse);
-  }, []);
-  
+    // 3) route matching (order matters)
+    if (!p || p === "/") {
+      setRoute("home");
+      return;
+    }
+
+    // /work/:slug (detail pages)
+    if (p.startsWith("/work/")) {
+      const slug = p.split("/")[2] || "";
+      if (slug === "pyrevit-sheet-suite") {
+        setRoute("work:pyrevit");
+      } else {
+        setRoute(`work:${slug}` as RouteKey);
+      }
+      return;
+    }
+
+    // top-level sections
+    if (p.startsWith("/work"))      return setRoute("work");
+    if (p.startsWith("/services"))  return setRoute("services");
+    if (p.startsWith("/tools"))     return setRoute("tools");
+    if (p.startsWith("/about"))     return setRoute("about");
+    if (p.startsWith("/contact"))   return setRoute("contact");
+
+    // fallback
+    setRoute("home");
+  };
+
+  parse();
+  window.addEventListener("popstate", parse);
+  return () => window.removeEventListener("popstate", parse);
+}, []);
+
   // Data — services / tools / companies / testimonials
   const services = [
     { name: 'BIM Automation Sprint', time: '2 weeks', price: 'from $4,800', bullets: ['Backlog audit & prioritization', 'Ship 1–2 pyRevit/Dynamo tools', 'Docs + Loom walkthroughs'] },
@@ -230,29 +349,79 @@ export default function AppShell() {
     else v.pause();
   }, [canAutoplay, HAS_VIDEO_SOURCES, heroVisible]);
 
-    return (
+   return (
     <ErrorBoundary>
       <div className="min-h-screen bg-neutral-950 text-neutral-100 antialiased">
         <SkipToContent />
+        {/* Route-aware SEO */}
+        {(() => {
+          const { title, description, image } = getSeoForRoute(route);
+          return <SEO title={title} description={description} image={image} />;
+        })()}
+        <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
 
-      {/* Header */}
-      <header className="sticky top-0 z-50 backdrop-blur supports-[backdrop-filter]:bg-neutral-950/70 border-b border-white/10">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <a href="/" className="font-semibold tracking-tight text-lg">
-            Curtis Bolden — Portfolio
-          </a>
-          <nav className="hidden md:flex items-center gap-8 text-sm">
-            <NavLink href="/" className="hover:text-white/90 text-white/70">Home</NavLink>
-            <NavLink href="/work" className="hover:text-white/90 text-white/70">Work</NavLink>
-            <NavLink href="/services" className="hover:text-white/90 text-white/70">Services</NavLink>
-            <NavLink href="/tools" className="hover:text-white/90 text-white/70">Tools</NavLink>
-            <NavLink href="/about" className="hover:text-white/90 text-white/70">About</NavLink>
-            <a href="/contact" className="rounded-xl border border-white/15 px-4 py-2 hover:bg-white/10 transition">
-              Book a consult
+        {/* Header */}
+        <header className="sticky top-0 z-50 backdrop-blur supports-[backdrop-filter]:bg-neutral-950/70 border-b border-white/10">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-18 md:h-20 flex items-center justify-between">
+            {/* Brand/logo */}
+            <a href="/" aria-label="CB Design Consultants — Home" className="flex items-center gap-3">
+              <img
+                src="/assets/brand/co-logo-white.png"
+                alt="CB Design Consultants"
+                className="h-9 w-auto md:h-10 select-none"
+                loading="eager"
+                decoding="async"
+              />
+              <span className="sr-only">CB Design Consultants</span>
             </a>
-          </nav>
-        </div>
-      </header>
+
+            {/* Nav */}
+            <nav className="hidden md:flex items-center gap-8 text-sm">
+              {[
+                { href: "/", label: "Home" },
+                { href: "/work", label: "Work" },
+                { href: "/services", label: "Services" },
+                { href: "/tools", label: "Tools" },
+                { href: "/about", label: "About" },
+                { href: "/contact", label: "Contact" },
+              ].map((link) => {
+                const active = isActive(link.href, route);
+                return (
+                  <NavLink
+                    key={link.href}
+                    href={link.href}
+                    aria-current={active ? "page" : undefined}
+                    className={
+                      active
+                        ? "text-white font-medium underline underline-offset-4"
+                        : "hover:text-white/90 text-white/70"
+                    }
+                  >
+                    {link.label}
+                  </NavLink>
+                );
+              })}
+
+              <a
+                href="/contact"
+                className="rounded-xl border border-white/15 px-4 py-2 hover:bg-white/10 transition"
+              >
+                Book a consult
+              </a>
+            </nav>
+          </div>
+        </header>
+
+      {/* 👇 main wrapper for content */}
+      <main
+        id="main"
+        ref={mainRef}
+        tabIndex={-1}
+        className="outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-500"
+      >
 
 {/* HOME */}
 {route === "home" && (
@@ -284,7 +453,7 @@ export default function AppShell() {
 
         {/* RIGHT: video */}
         <div className="relative md:col-span-6">
-          <div className="relative aspect-[16/9] overflow-hidden rounded-3xl border border-white/10 bg-black shadow-2xl md:scale-[1.07] md:translate-x-2 md:-translate-y-1">
+          <div className="relative aspect-[16/9] overflow-hidden rounded-3xl border border-white/10 bg-black shadow-2xl md:scale-[1.15] md:translate-x-3 md:-translate-y-1">
             {canAutoplay && HAS_VIDEO_SOURCES ? (
               <video
                 ref={heroVideoRef}
@@ -420,17 +589,54 @@ export default function AppShell() {
 {/* NON-HOME ROUTES */}
 {route !== "home" && (
   <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20">
-    <h1 className="text-3xl md:text-4xl font-semibold capitalize">{route.replace(":", " / ")}</h1>
-    <p className="text-white/70 mt-2 max-w-2xl">
-      This is a placeholder page in the mock router. Navigate back with the header links.
-    </p>
-    {route === "about" && <AboutTabs toolLogos={toolLogos} companies={companies} />}
+    {route === "work" && <WorkPage />}
+
+    {route.startsWith("work:") && route !== "work" && (
+      <WorkDetail slug={route.split(":")[1]} />
+    )}
+
+    {route === "contact" && <ContactPage />}
+
+    {route === "services" && (
+      <>
+        <h1 className="text-3xl md:text-4xl font-semibold">Services</h1>
+        <p className="text-white/70 mt-2 max-w-2xl">
+          Clear scope, timelines, and deliverables focused on measurable outcomes.
+        </p>
+        <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {services.map((s) => (
+            <ServiceCard key={s.name} service={s} />
+          ))}
+        </div>
+      </>
+    )}
+
+    {route === "about" && (
+      <>
+        <h1 className="text-3xl md:text-4xl font-semibold">About</h1>
+        <p className="text-white/70 mt-2 max-w-2xl">
+          Bio, skills, and companies I’ve contributed to.
+        </p>
+        <AboutTabs toolLogos={toolLogos} companies={companies} />
+      </>
+    )}
+
+    {route === "tools" && (
+      <>
+        <h1 className="text-3xl md:text-4xl font-semibold">Tools</h1>
+        <div className="mt-4 text-white/70">
+          pyRevit/Dynamo tools, exporters, and validators — catalog coming soon.
+        </div>
+      </>
+    )}
   </section>
 )}
 
-<Footer />
-</div>
-</ErrorBoundary>
+      </main>
+
+      <Footer />
+    </div>
+  </ErrorBoundary>
 );
 }
 
@@ -532,7 +738,7 @@ function BioBlock() {
         <img
           src="/headshots/curtis.png"
           alt="Curtis Bolden"
-          className="aspect-square w-full rounded-3xl border border-white/10 bg-black/20 object-cover object-[50%_18%] md:object-[50%_12%]"
+          className="aspect-square w-full rounded-3xl border border-white/10 bg-black/20 object-cover object-[50%_18%] md:object-[50%_2%]"
           loading="lazy"
           onError={(e) => {
             const box = e.currentTarget.parentElement;
@@ -613,6 +819,29 @@ function CompaniesBlock({ companies }: { companies: CompanyLogo[] }) {
             {c.src ? <img src={c.src} alt={c.name} className="h-10 object-contain" /> : <span className="text-sm text-white/80">{c.name}</span>}
           </div>
         ))}
+      </div>
+    </div>
+  );
+}
+
+function ServiceCard({ service }: { service: { name: string; time: string; price: string; bullets: string[] } }) {
+  return (
+    <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 flex flex-col">
+      <div className="flex items-center justify-between gap-2">
+        <h3 className="font-semibold text-lg">{service.name}</h3>
+        <span className="text-xs text-white/60">{service.time}</span>
+      </div>
+      <ul className="mt-4 space-y-2 text-sm text-white/80">
+        {service.bullets.map((b) => (
+          <li key={b} className="flex items-start gap-2">
+            <span className="mt-1 h-1.5 w-1.5 rounded-full bg-white/60" />
+            {b}
+          </li>
+        ))}
+      </ul>
+      <div className="mt-6 flex items-center justify-between">
+        <span className="text-white/90 font-medium">{service.price}</span>
+        <a href="/contact" className="rounded-xl border border-white/15 px-4 py-2 text-sm hover:bg-white/10">Start</a>
       </div>
     </div>
   );

@@ -1,74 +1,104 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <head>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
 
-  <!-- if you later add a Google Font CSS, it’ll be faster -->
+    <!-- Vercel Speed Insights -->
+    <script defer src="/_vercel/speed-insights/script.js"></script>
 
-  <!-- Vercel Speed Insights -->
-  <script defer src="/_vercel/speed-insights/script.js"></script>
+    <!-- Vercel Web Analytics -->
+    <script defer src="/_vercel/insights/script.js"></script>
 
-  <!-- Vercel Web Analytics -->
-  <script defer src="/_vercel/insights/script.js"></script>
+    <!-- Meta -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Site Title and Description -->
+    <title>CB Design Consultants — Structural BIM + Automation</title>
+    <meta
+      name="description"
+      content="Revit tooling, analysis handoffs, and dashboards that cut friction—pyRevit/C# scripts, data pipelines, and QA/QC checks that teams actually use."
+    />
+    <link rel="canonical" href="https://cb-designconsultants.com/" />
 
-  <title>CB Design Consultants | Structural BIM & Automation</title>
-  <meta name="description" content="Structural BIM, automation tools, and portfolio of Curtis Bolden — blending engineering precision with modern technology.">
-  <link rel="canonical" href="https://cb-designconsultants.com/" />
+    <!-- Favicons & App Manifest -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/cbdc-favicon-16x16.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#0a0a0a" />
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon/CBDC_Favicon_32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon/CBDC_Favicon_16x16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="/favicon/CBDC_Favicon_180x180.png">
-  <link rel="shortcut icon" href="/favicon/CBDC_Favicon_32x32.ico" type="image/x-icon">
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:title"
+      content="CB Design Consultants — Structural BIM + Automation"
+    />
+    <meta
+      property="og:description"
+      content="Revit tooling, analysis handoffs, and dashboards that cut friction."
+    />
+    <meta property="og:image" content="/og-cover.jpg" />
+    <meta property="og:url" content="https://cb-designconsultants.com" />
 
-  <!-- Open Graph -->
-  <meta property="og:title" content="Curtis Bolden — Structural BIM + Automation" />
-  <meta property="og:description" content="pyRevit/C#, Revit ↔ Analysis handoffs, dashboards, and QA/QC that teams actually use." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://curtis-portfolio.vercel.app" />
-  <meta property="og:image" content="https://curtis-portfolio.vercel.app/og.svg" />
-  <meta property="og:image:alt" content="Curtis Bolden — Structural BIM + Automation" />
-  <meta property="og:site_name" content="Curtis Bolden — Portfolio" />
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="CB Design Consultants — Structural BIM + Automation"
+    />
+    <meta
+      name="twitter:description"
+      content="Revit tooling, analysis handoffs, and dashboards that cut friction."
+    />
+    <meta name="twitter:image" content="/og-cover.jpg" />
 
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Curtis Bolden — Structural BIM + Automation" />
-  <meta name="twitter:description" content="pyRevit/C#, Revit ↔ Analysis handoffs, dashboards, and QA/QC that teams actually use." />
-  <meta name="twitter:image" content="https://curtis-portfolio.vercel.app/og.svg" />
+    <!-- Structured Data: Person -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Curtis Bolden",
+        "url": "https://cb-designconsultants.com/",
+        "jobTitle": "Structural BIM / VDC + Automation",
+        "knowsAbout": [
+          "Revit",
+          "pyRevit",
+          "Dynamo",
+          "Revit API",
+          "Python",
+          "Power BI"
+        ],
+        "sameAs": []
+      }
+    </script>
 
-  <script type="application/ld+json">
-  {
-  "@context": "https://schema.org",
-  "@type": "Person",
-  "name": "Curtis Bolden",
-  "url": "https://cb-designconsultants.com/",
-  "jobTitle": "Structural BIM / VDC + Automation",
-  "knowsAbout": ["Revit", "pyRevit", "Dynamo", "Revit API", "Python", "Power BI"],
-  "sameAs": []
-  }
-  </script>
+    <!-- Structured Data: Website -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Curtis Bolden — Portfolio",
+        "url": "https://cb-designconsultants.com/",
+        "inLanguage": "en"
+      }
+    </script>
 
-  <script type="application/ld+json">
-  {
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "Curtis Bolden — Portfolio",
-  "url": "https://cb-designconsultants.com/",
-  "inLanguage": "en"
-  }
-  </script>
-
-  <script defer src="https://va.vercel-scripts.com/v1/script.js" data-id="YOUR_ID"></script>
-
-  <!-- Optional: preload Inter variable font if you add one later -->
-  <!-- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
-</head>
+    <!-- Vercel Analytics Script -->
+    <script
+      defer
+      src="https://va.vercel-scripts.com/v1/script.js"
+      data-id="YOUR_ID"
+    ></script>
+  </head>
 
   <body>
     <div id="root"></div>

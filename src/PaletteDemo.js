@@ -1,0 +1,5 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+export default function PaletteDemo() {
+    const scales = ['50', '100', '200', '300', '400', '500', '600', '700', '800', '900'];
+    return (_jsxs("div", { className: "min-h-[40vh] bg-bg text-fg p-6 space-y-6", children: [_jsx("div", { className: "text-xl font-semibold", children: "Brand Colors" }), _jsx("div", { className: "grid grid-cols-10 gap-2", children: scales.map(s => (_jsx("div", { className: `h-10 rounded border border-border bg-brand-${s}` }, `b-${s}`))) }), _jsx("div", { className: "text-xl font-semibold mt-6", children: "Neutral Colors" }), _jsx("div", { className: "grid grid-cols-10 gap-2", children: scales.map(s => (_jsx("div", { className: `h-10 rounded border border-border bg-neutral-${s}` }, `n-${s}`))) }), _jsx("div", { className: "text-xl font-semibold mt-6", children: "Gradients" }), _jsx("div", { className: "h-16 rounded gradient-brand shadow-soft" }), _jsx("div", { className: "h-16 rounded gradient-brand-soft border border-border" })] }));
+}
