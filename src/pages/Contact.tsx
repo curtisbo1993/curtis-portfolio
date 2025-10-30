@@ -1,7 +1,8 @@
+// src/pages/Contact.tsx
 // @ts-nocheck
 import React, { useState } from "react";
 
-const FORMSPREE_ENDPOINT = "https://formspree.io/f/xzzkvdyk"; // <-- replace this line later
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/xzzkvdyk"; // replace if you make a new form
 
 export default function ContactPage() {
   const [state, setState] = useState<{ ok?: boolean; msg?: string }>({});
@@ -23,7 +24,7 @@ export default function ContactPage() {
         const j = await res.json().catch(() => ({}));
         setState({ ok: false, msg: j?.error || "Something went wrong. Try again." });
       }
-    } catch (err) {
+    } catch {
       setState({ ok: false, msg: "Network error. Please try again." });
     }
   }
@@ -68,6 +69,7 @@ export default function ContactPage() {
           <textarea id="message" name="message" required rows={6} className="w-full rounded-xl border border-white/15 bg-white/5 px-4 py-3 outline-none focus:ring-2 focus:ring-fuchsia-500" placeholder="Tell me about your project, goals, and timeline." />
         </div>
 
+        {/* honeypot */}
         <input type="text" name="_gotcha" className="hidden" tabIndex={-1} autoComplete="off" />
 
         <button type="submit" className="rounded-2xl bg-white text-neutral-900 px-5 py-3 font-medium hover:opacity-90">
