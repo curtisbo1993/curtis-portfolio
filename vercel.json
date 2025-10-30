@@ -8,5 +8,7 @@
     { "src": "/hero/(.*)", "dest": "/hero/$1" },
     { "src": "/headshots/(.*)", "dest": "/headshots/$1" },
     { "src": "/(.*)", "dest": "/" }  
+  ],
+  "rewrites": [{ "source": "/(.*)", "destination": "/" } 
   ]
 }
