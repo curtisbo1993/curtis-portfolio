@@ -1,14 +1,4 @@
 {
-  "builds": [
-    { "src": "index.html", "use": "@vercel/static-build", "config": { "distDir": "dist" } }
-  ],
-  "routes": [
-    { "src": "/favicon.ico", "dest": "/favicon.ico" },
-    { "src": "/assets/(.*)", "dest": "/assets/$1" },
-    { "src": "/hero/(.*)", "dest": "/hero/$1" },
-    { "src": "/headshots/(.*)", "dest": "/headshots/$1" },
-    { "src": "/(.*)", "dest": "/" }  
-  ],
-  "rewrites": [{ "source": "/(.*)", "destination": "/" } 
-  ]
+  "rewrites": [{ "source": "/(.*)", "destination": "/" }]
 }
+
