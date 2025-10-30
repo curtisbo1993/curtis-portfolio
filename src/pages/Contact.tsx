@@ -1,154 +1,92 @@
-// src/pages/Contact.tsx
 // @ts-nocheck
 import React, { useState } from "react";
 
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/xzzkvdyk"; // <-- replace this line later
+
 export default function ContactPage() {
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    company: "",
-    services: [] as string[],
-    budget: "",
-    message: "",
-  });
+  const [state, setState] = useState<{ ok?: boolean; msg?: string }>({});
 
-  const toggleService = (s: string) =>
-    setForm((f) => {
-      const has = f.services.includes(s);
-      return { ...f, services: has ? f.services.filter(x => x !== s) : [...f.services, s] };
-    });
-
-  const onSubmit = (e: React.FormEvent) => {
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const subject = `Consult: ${form.name || "New inquiry"}`;
-    const lines = [
-      `Name: ${form.name}`,
-      `Email: ${form.email}`,
-      `Company: ${form.company}`,
-      `Services: ${form.services.join(", ") || "—"}`,
-      `Budget: ${form.budget || "—"}`,
-      "",
-      "Message:",
-      form.message || "—",
-    ];
-    const body = encodeURIComponent(lines.join("\n"));
-    window.location.href = `mailto:curtis@example.com?subject=${encodeURIComponent(subject)}&body=${body}`;
-  };
-
-  const svc = [
-    "BIM Automation Sprint",
-    "Revit ↔ Analysis Sync",
-    "Coordination Dashboard",
-    "Model Health Audit",
-    "Revit Family Library",
-    "Clash Coordination Playbook",
-    "Parametric Connection Generator",
-    "Revit → Power BI Exporter",
-  ];
+    const form = e.currentTarget;
+    const data = new FormData(form);
+    try {
+      const res = await fetch(FORMSPREE_ENDPOINT, {
+        method: "POST",
+        headers: { Accept: "application/json" },
+        body: data,
+      });
+      if (res.ok) {
+        form.reset();
+        setState({ ok: true, msg: "Thanks! I’ll get back to you shortly." });
+      } else {
+        const j = await res.json().catch(() => ({}));
+        setState({ ok: false, msg: j?.error || "Something went wrong. Try again." });
+      }
+    } catch (err) {
+      setState({ ok: false, msg: "Network error. Please try again." });
+    }
+  }
 
   return (
-    <section className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12">
-      <h1 className="text-3xl md:text-4xl font-semibold">Book a consult</h1>
+    <div className="max-w-2xl mx-auto">
+      <h1 className="text-3xl md:text-4xl font-semibold">Contact</h1>
       <p className="text-white/70 mt-2">
-        15-minute discovery to scope the fastest path to value.
+        Quick discovery call → scoped plan → measurable delivery.
       </p>
 
-      <form onSubmit={onSubmit} className="mt-8 space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <label className="block">
-            <span className="text-sm text-white/80">Name</span>
-            <input
-              required
-              value={form.name}
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
-              className="mt-1 w-full rounded-xl border border-white/15 bg-white/5 px-3 py-2 outline-none focus:ring-2 focus:ring-white/20"
-            />
-          </label>
-          <label className="block">
-            <span className="text-sm text-white/80">Email</span>
-            <input
-              type="email"
-              required
-              value={form.email}
-              onChange={(e) => setForm({ ...form, email: e.target.value })}
-              className="mt-1 w-full rounded-xl border border-white/15 bg-white/5 px-3 py-2 outline-none focus:ring-2 focus:ring-white/20"
-            />
-          </label>
+      <form onSubmit={onSubmit} className="mt-8 space-y-5">
+        <div>
+          <label className="block text-sm text-white/80 mb-1" htmlFor="name">Name</label>
+          <input id="name" name="name" required className="w-full rounded-xl border border-white/15 bg-white/5 px-4 py-3 outline-none focus:ring-2 focus:ring-fuchsia-500" placeholder="Your name" />
         </div>
 
-        <label className="block">
-          <span className="text-sm text-white/80">Company (optional)</span>
-          <input
-            value={form.company}
-            onChange={(e) => setForm({ ...form, company: e.target.value })}
-            className="mt-1 w-full rounded-xl border border-white/15 bg-white/5 px-3 py-2 outline-none focus:ring-2 focus:ring-white/20"
-          />
-        </label>
-
-        <fieldset>
-          <legend className="text-sm text-white/80">What do you need?</legend>
-          <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2">
-            {svc.map((s) => (
-              <button
-                type="button"
-                key={s}
-                onClick={() => toggleService(s)}
-                className={`text-left rounded-xl border px-3 py-2 text-sm ${
-                  form.services.includes(s)
-                    ? "bg-white text-neutral-900"
-                    : "border-white/15 text-white/80 hover:bg-white/10"
-                }`}
-              >
-                {s}
-              </button>
-            ))}
-          </div>
-        </fieldset>
-
-        <fieldset>
-          <legend className="text-sm text-white/80">Budget range</legend>
-          <div className="mt-3 flex flex-wrap gap-2 text-sm">
-            {["<$5k", "$5–10k", "$10–25k", "$25–50k", "$50k+"].map((b) => (
-              <label key={b} className="inline-flex items-center gap-2 rounded-xl border border-white/15 px-3 py-2 hover:bg-white/10">
-                <input
-                  type="radio"
-                  name="budget"
-                  value={b}
-                  checked={form.budget === b}
-                  onChange={(e) => setForm({ ...form, budget: e.target.value })}
-                />
-                {b}
-              </label>
-            ))}
-          </div>
-        </fieldset>
-
-        <label className="block">
-          <span className="text-sm text-white/80">Message</span>
-          <textarea
-            rows={6}
-            value={form.message}
-            onChange={(e) => setForm({ ...form, message: e.target.value })}
-            placeholder="What problem are we solving? Timeline? Stack?"
-            className="mt-1 w-full rounded-xl border border-white/15 bg-white/5 px-3 py-2 outline-none focus:ring-2 focus:ring-white/20"
-          />
-        </label>
-
-        <div className="flex items-center gap-3">
-          <button
-            type="submit"
-            className="rounded-2xl bg-white text-neutral-900 px-5 py-3 font-medium hover:opacity-90"
-          >
-            Send email
-          </button>
-          <a
-            href="mailto:curtis@example.com"
-            className="rounded-2xl border border-white/20 px-5 py-3 font-medium hover:bg-white/10"
-          >
-            Or email directly
-          </a>
+        <div>
+          <label className="block text-sm text-white/80 mb-1" htmlFor="email">Email</label>
+          <input id="email" name="email" type="email" required className="w-full rounded-xl border border-white/15 bg-white/5 px-4 py-3 outline-none focus:ring-2 focus:ring-fuchsia-500" placeholder="you@company.com" />
         </div>
+
+        <div>
+          <label className="block text-sm text-white/80 mb-1" htmlFor="company">Company (optional)</label>
+          <input id="company" name="company" className="w-full rounded-xl border border-white/15 bg-white/5 px-4 py-3 outline-none focus:ring-2 focus:ring-fuchsia-500" placeholder="Company name" />
+        </div>
+
+        <div>
+          <label className="block text-sm text-white/80 mb-1" htmlFor="service">What do you need?</label>
+          <select id="service" name="service" className="w-full rounded-xl border border-white/15 bg-white/5 px-4 py-3 outline-none focus:ring-2 focus:ring-fuchsia-500" defaultValue="BIM Automation Sprint">
+            <option>BIM Automation Sprint</option>
+            <option>Revit ↔ Analysis Sync</option>
+            <option>Coordination Dashboard</option>
+            <option>Model Health Audit & Standards</option>
+            <option>Revit Family Library Build</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div>
+          <label className="block text-sm text-white/80 mb-1" htmlFor="message">Message</label>
+          <textarea id="message" name="message" required rows={6} className="w-full rounded-xl border border-white/15 bg-white/5 px-4 py-3 outline-none focus:ring-2 focus:ring-fuchsia-500" placeholder="Tell me about your project, goals, and timeline." />
+        </div>
+
+        <input type="text" name="_gotcha" className="hidden" tabIndex={-1} autoComplete="off" />
+
+        <button type="submit" className="rounded-2xl bg-white text-neutral-900 px-5 py-3 font-medium hover:opacity-90">
+          Send message
+        </button>
+
+        {state.msg && (
+          <div className={`mt-3 rounded-xl border px-4 py-3 ${state.ok ? "border-green-400/40 bg-green-400/10" : "border-red-400/40 bg-red-400/10"}`}>
+            {state.msg}
+          </div>
+        )}
       </form>
-    </section>
+
+      <div className="mt-10 text-sm text-white/60">
+        Prefer email?{" "}
+        <a className="underline hover:text-white" href="mailto:curtis@example.com">
+          curtis@example.com
+        </a>
+      </div>
+    </div>
   );
 }
