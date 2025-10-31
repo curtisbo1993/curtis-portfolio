@@ -20,6 +20,15 @@ export default function ContactPage() {
       if (res.ok) {
         form.reset();
         setState({ ok: true, msg: "Thanks! I’ll get back to you shortly." });
+
+        // ✅ Plausible goal: Contact form submitted
+        try {
+          const svc = String(data.get("service") || "");
+          (window as any).plausible?.("Contact Form Submitted", {
+            props: svc ? { service: svc } : undefined,
+          });
+        } catch {}
+        return;
       } else {
         const j = await res.json().catch(() => ({}));
         setState({ ok: false, msg: j?.error || "Something went wrong. Try again." });
@@ -54,7 +63,7 @@ export default function ContactPage() {
 
         <div>
           <label className="block text-sm text-white/80 mb-1" htmlFor="service">What do you need?</label>
-          <select id="service" name="service" className="w-full rounded-xl border border-white/15 bg-white/5 px-4 py-3 outline-none focus:ring-2 focus:ring-fuchsia-500" defaultValue="BIM Automation Sprint">
+          <select id="service" name="service" className="w-full rounded-xl border border-white/15 bg-neutral-900 text-white px-4 py-3 outline-none focus:ring-2 focus:ring-fuchsia-500" defaultValue="BIM Automation Sprint">
             <option>BIM Automation Sprint</option>
             <option>Revit ↔ Analysis Sync</option>
             <option>Coordination Dashboard</option>
@@ -77,16 +86,20 @@ export default function ContactPage() {
         </button>
 
         {state.msg && (
-          <div className={`mt-3 rounded-xl border px-4 py-3 ${state.ok ? "border-green-400/40 bg-green-400/10" : "border-red-400/40 bg-red-400/10"}`}>
+          <div
+            className={`mt-3 text-sm transition-opacity duration-700 ease-in-out ${
+              state.ok ? "text-emerald-400 opacity-100" : "text-rose-400 opacity-100"
+            }`}
+          >
             {state.msg}
           </div>
         )}
-      </form>
+        </form>
 
       <div className="mt-10 text-sm text-white/60">
         Prefer email?{" "}
-        <a className="underline hover:text-white" href="mailto:curtis@example.com">
-          curtis@example.com
+        <a className="underline hover:text-white" href="mailto:cbolden@cb-designconsultants.com">
+          cbolden@cb-designconsultants.com
         </a>
       </div>
     </div>

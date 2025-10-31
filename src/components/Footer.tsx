@@ -1,3 +1,5 @@
+import Disclaimer from "./Disclaimer";
+
 export default function Footer() {
   const year = new Date().getFullYear();
   return (
@@ -13,17 +15,22 @@ export default function Footer() {
         </div>
 
         <p>
-          © {year} Curtis Bolden — CB Design Consultants.  
-          Built with React + Tailwind on Vite.
+          © 2025 CB Design Consultants | All Rights Reserved. |{" "}
+          <a href="/privacy" className="underline hover:text-white/80">Privacy Policy</a> ·{" "}
+          <a href="/terms" className="underline hover:text-white/80">Terms of Service</a>
         </p>
 
-        <div className="flex justify-center gap-3 text-white/50">
-          <a href="https://www.linkedin.com/" target="_blank" rel="noreferrer" aria-label="LinkedIn">
-            <svg width="20" height="20" fill="currentColor"><path d="M5 3a2 2 0 11-4 0 2 2 0 014 0zM1 7h4v12H1V7zm7 0h3.8v1.7h.1c.5-.9 1.9-1.9 3.9-1.9 4.2 0 5 2.8 5 6.4V19H18v-5.3c0-1.3 0-3-1.9-3s-2.2 1.5-2.2 3V19h-4V7z"/></svg>
-          </a>
-          <a href="https://github.com/" target="_blank" rel="noreferrer" aria-label="GitHub">
-            <svg width="20" height="20" fill="currentColor"><path d="M10 .3a10 10 0 00-3.2 19.5c.5.1.7-.2.7-.5v-1.8c-2.9.6-3.5-1.4-3.5-1.4-.4-1-1-1.3-1-1.3-.8-.6.1-.6.1-.6.9.1 1.3.9 1.3.9.8 1.3 2.1.9 2.6.7.1-.6.3-1 .6-1.3-2.3-.2-4.8-1.1-4.8-5a3.9 3.9 0 011-2.7c-.1-.3-.4-1.3.1-2.7 0 0 .8-.2 2.8 1a9.5 9.5 0 015.1 0c2-.9 2.8-1 2.8-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.5 4.8-4.9 5 .3.3.6.9.6 1.9v2.8c0 .3.2.6.7.5A10 10 0 0010 .3"/></svg>
-          </a>
+        <Disclaimer />
+
+        <div className="mt-4 flex items-center justify-center gap-4 text-white/70">
+          <a href="https://twitter.com/yourhandle" aria-label="X / Twitter" className="hover:text-white">X</a>
+          <a href="https://facebook.com/yourhandle" aria-label="Facebook" className="hover:text-white">Fb</a>
+          <a href="https://instagram.com/yourhandle" aria-label="Instagram" className="hover:text-white">Ig</a>
+          <a href="https://www.linkedin.com/in/curtisaboldenjr/" aria-label="LinkedIn" className="hover:text-white">in</a>
+          <a href="https://youtube.com/@yourhandle" aria-label="YouTube" className="hover:text-white">YT</a>
+          <a href="https://github.com/yourhandle" aria-label="GitHub" className="hover:text-white">GH</a>
+          <a href="https://www.behance.net/yourhandle" aria-label="Behance" className="hover:text-white">Be</a>
+          <a href="https://dribbble.com/yourhandle" aria-label="Dribbble" className="hover:text-white">Db</a>
         </div>
       </div>
     </footer>

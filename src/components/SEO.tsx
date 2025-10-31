@@ -1,76 +1,32 @@
-import { useEffect } from "react";
+// src/components/SEO.tsx
+// @ts-nocheck
+import React from "react";
 
-type Props = {
-  title: string;
-  description: string;
-  image?: string;
-  url?: string;
-  canonical?: string;
-  twitter?: { handle?: string; site?: string };
-};
+export default function SEO({ title, description, image }: { title: string; description: string; image?: string }) {
+  const origin = typeof window !== "undefined" ? window.location.origin : "https://www.cb-designconsultants.com";
+  const path   = typeof window !== "undefined" ? window.location.pathname + window.location.search : "/";
+  const url    = `${origin}${path}`;
+  const ogImg  = image?.startsWith("http") ? image : `${origin}${image || "/thumbnail.jpg"}`;
 
-export default function SEO({
-  title,
-  description,
-  image = "/thumbnail.jpg",
-  url = typeof location !== "undefined" ? location.href : "",
-  canonical,
-  twitter = { handle: "@cbdesign", site: "@cbdesign" },
-}: Props) {
-  useEffect(() => {
-    const head = document.head;
+  return (
+    <>
+      <title>{title}</title>
+      <link rel="canonical" href={url} />
+      <meta name="description" content={description} />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    const setName = (name: string, content: string) => {
-      let el = head.querySelector<HTMLMetaElement>(`meta[name="${name}"]`);
-      if (!el) {
-        el = document.createElement("meta");
-        el.setAttribute("name", name);
-        head.appendChild(el);
-      }
-      el.setAttribute("content", content);
-    };
+      {/* Open Graph */}
+      <meta property="og:type" content="website" />
+      <meta property="og:title" content={title} />
+      <meta property="og:description" content={description} />
+      <meta property="og:url" content={url} />
+      <meta property="og:image" content={ogImg} />
 
-    const setProp = (property: string, content: string) => {
-      let el = head.querySelector<HTMLMetaElement>(`meta[property="${property}"]`);
-      if (!el) {
-        el = document.createElement("meta");
-        el.setAttribute("property", property);
-        head.appendChild(el);
-      }
-      el.setAttribute("content", content);
-    };
-
-    // title
-    document.title = title;
-
-    // description
-    setName("description", description);
-
-    // Open Graph
-    setProp("og:title", title);
-    setProp("og:description", description);
-    setProp("og:image", image);
-    setProp("og:url", url);
-    setProp("og:type", "website");
-
-    // Twitter Card
-    setName("twitter:card", "summary_large_image");
-    setName("twitter:title", title);
-    setName("twitter:description", description);
-    setName("twitter:image", image);
-    if (twitter.handle) setName("twitter:creator", twitter.handle);
-    if (twitter.site) setName("twitter:site", twitter.site);
-
-    // Canonical
-    const href = canonical || url;
-    let link = head.querySelector<HTMLLinkElement>('link[rel="canonical"]');
-    if (!link) {
-      link = document.createElement("link");
-      link.setAttribute("rel", "canonical");
-      head.appendChild(link);
-    }
-    link.setAttribute("href", href);
-  }, [title, description, image, url, canonical, twitter.handle, twitter.site]);
-
-  return null;
+      {/* Twitter */}
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content={title} />
+      <meta name="twitter:description" content={description} />
+      <meta name="twitter:image" content={ogImg} />
+    </>
+  );
 }

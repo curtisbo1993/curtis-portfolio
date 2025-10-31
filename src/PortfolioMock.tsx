@@ -8,6 +8,9 @@ import WorkPage from "@/pages/Work";
 import ContactPage from "./pages/Contact";
 import WorkDetail from "@/pages/WorkDetail";
 import SEO from "./components/SEO";
+import { WORK } from "./data/work";
+import PrivacyPage from "./pages/Privacy";
+import TermsPage from "./pages/Terms";
 
 /* -------------------- ErrorBoundary -------------------- */
 class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean }> {
@@ -78,6 +81,8 @@ type RouteKey =
   | "tools"
   | "about"
   | "contact"
+  | "privacy"
+  | "terms"
   | "notfound"
   | "work:pyrevit"
   | `work:${string}`;
@@ -121,18 +126,11 @@ function getSeoForRoute(route: RouteKey) {
     title = "Work — Case Studies | CB Design Consultants";
     description = "Selected projects with measurable outcomes in BIM automation, analysis handoffs, and coordination.";
   } else if (route.startsWith("work:")) {
-    const slug = route.split(":")[1];
-    if (slug === "pyrevit-sheet-suite") {
-      title = "pyRevit Sheet Suite — Case Study | CB Design Consultants";
-      description =
-        "A focused pyRevit toolset that automates sheet creation, naming, and QA checks—hours saved weekly.";
-      image = "/assets/work/pyrevit-sheet-suite/og.jpg";
-    } else {
-      // Generic work detail
-      title = `${slug.replace(/-/g, " ")} — Case Study | CB Design Consultants`;
-      description = "Project details, outcomes, and lessons learned.";
-      image = "/thumbnail.jpg";
-    }
+  const slug = route.split(":")[1];
+  const item = WORK.find(w => w.slug === slug);
+  title = `${item?.title ?? slug.replace(/-/g, " ")} — Case Study | CB Design Consultants`;
+  description = item?.summary ?? "Project details, outcomes, and lessons learned.";
+  image = item?.og ?? "/thumbnail.jpg";
   } else if (route === "services") {
     title = "Services — Productized BIM/Dev | CB Design Consultants";
     description = "Clear scope and deliverables: automation sprints, Revit↔Analysis sync, dashboards, and more.";
@@ -145,6 +143,12 @@ function getSeoForRoute(route: RouteKey) {
   } else if (route === "contact") {
     title = "Contact — Book a Consult | CB Design Consultants";
     description = "Quick discovery call to map problems → outcomes. Let’s get you hours back every week.";
+  } else if (route === "privacy") {
+  title = "Privacy Policy | CB Design Consultants";
+  description = "How we handle personal data, cookies, analytics, and your rights.";
+  } else if (route === "terms") {
+    title = "Terms of Service | CB Design Consultants";
+    description = "Service scope, IP, payment, and legal terms for working together.";
   }
 
   return { title, description, image };
@@ -199,8 +203,11 @@ useEffect(() => {
     const hash = window.location.hash.replace("#", "");
     if (hash.startsWith("/")) history.replaceState(null, "", hash);
 
-    // 2) get pathname ONCE, before any checks
+    // 2) get pathname once
     const p = window.location.pathname;
+    if (p.startsWith("/privacy"))  return setRoute("privacy");
+    if (p.startsWith("/terms"))    return setRoute("terms");
+
 
     // 3) route matching (order matters)
     if (!p || p === "/") {
@@ -211,38 +218,22 @@ useEffect(() => {
     // /work/:slug (detail pages)
     if (p.startsWith("/work/")) {
       const slug = p.split("/")[2] || "";
-      if (slug === "pyrevit-sheet-suite") {
-        setRoute("work:pyrevit");
-      } else {
-        setRoute(`work:${slug}` as RouteKey);
-      }
+      if (slug === "pyrevit-sheet-suite") setRoute("work:pyrevit");
+      else setRoute(`work:${slug}` as RouteKey);
       return;
     }
 
     // top-level sections
-    if (p.startsWith("/work"))      return setRoute("work");
-    if (p.startsWith("/services"))  return setRoute("services");
-    if (p.startsWith("/tools"))     return setRoute("tools");
-    if (p.startsWith("/about"))     return setRoute("about");
-    if (p.startsWith("/contact"))   return setRoute("contact");
+    if (p.startsWith("/work"))     return setRoute("work");
+    if (p.startsWith("/services")) return setRoute("services");
+    if (p.startsWith("/tools"))    return setRoute("tools");
+    if (p.startsWith("/about"))    return setRoute("about");
+    if (p.startsWith("/contact"))  return setRoute("contact");
 
-    // after the top-level sections…
-    if (p.startsWith("/contact"))   return setRoute("contact");
-
-    // treat /404 as not found (so Share -> /404 shows the message)
+    // explicit /404 → notfound
     if (p === "/404") return setRoute("notfound");
-    {route === "notfound" && (
-    <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20">
-      <h1 className="text-3xl md:text-4xl font-semibold">We couldn’t find that page.</h1>
-      <p className="text-white/70 mt-2">Try Home or see recent Work.</p>
-      <div className="mt-6 flex gap-3">
-        <a href="/" className="rounded-xl border border-white/15 px-4 py-2 hover:bg-white/10">← Back Home</a>
-        <a href="/work" className="rounded-xl border border-white/15 px-4 py-2 hover:bg-white/10">See Work</a>
-      </div>
-    </section>
-  )}
 
-    // fallback: unknown route
+    // fallback
     setRoute("notfound");
   };
 
@@ -253,15 +244,57 @@ useEffect(() => {
 
   // Data — services / tools / companies / testimonials
   const services = [
-    { name: 'BIM Automation Sprint', time: '2 weeks', price: 'from $4,800', bullets: ['Backlog audit & prioritization', 'Ship 1–2 pyRevit/Dynamo tools', 'Docs + Loom walkthroughs'] },
-    { name: 'Revit ↔ Analysis Sync', time: '4–6 weeks', price: 'from $8,500', bullets: ['Exporter/validator design', 'Round‑trip data checks', 'Pilot on a live project'] },
-    { name: 'Coordination Dashboard', time: '3–4 weeks', price: 'from $6,500', bullets: ['Model health metrics', 'Clash/issue KPIs', 'Power BI delivery + refresh'] },
-    { name: 'Model Health Audit & Standards', time: '2 weeks', price: 'from $3,800', bullets: ['Audit views/sheets/families', 'Naming & parameter standards', 'Fix list + training'] },
-    { name: 'Revit Family Library Build', time: '3–5 weeks', price: 'from $7,200', bullets: ['Parametric families', 'Type catalogs', 'QA checklist + docs'] },
-    { name: 'Clash Coordination Playbook', time: '2–3 weeks', price: 'from $5,200', bullets: ['Workflow design', 'Issue aging KPIs', 'Navis/BCF handoff'] },
-    { name: 'Parametric Connection Generator', time: '3–4 weeks', price: 'from $9,000', bullets: ['Rules-based components', 'Schedules/Tagging', 'Shop drawing helpers'] },
-    { name: 'Revit → Power BI Data Exporter', time: '1–2 weeks', price: 'from $2,900', bullets: ['Parameter mapping', 'Delta export', 'Refresh scheduling'] },
-  ];
+  {
+    name: "BIM Automation Sprint",
+    time: "2 weeks",
+    price: "from $4,800",
+    bullets: [
+      "Backlog audit → priority scoring",
+      "Ship 1–2 pyRevit/Dynamo tools with docs",
+      "Loom walkthroughs + handoff"
+    ]
+  },
+  {
+    name: "Revit ↔ Analysis Sync",
+    time: "4–6 weeks",
+    price: "from $8,500",
+    bullets: [
+      "Exporter/validator design with round-trip checks",
+      "Parameter maps + guardrails to prevent data loss",
+      "Pilot integration on a live project"
+    ]
+  },
+  {
+    name: "Coordination Dashboard",
+    time: "3–4 weeks",
+    price: "from $6,500",
+    bullets: [
+      "Clash/issue KPI design (aging buckets)",
+      "Model health signals (discipline/area)",
+      "Power BI delivery + refresh schedule"
+    ]
+  },
+  {
+    name: "Model Health Audit & Standards",
+    time: "2 weeks",
+    price: "from $3,800",
+    bullets: [
+      "Views/sheets/families audit",
+      "Naming & parameter standards",
+      "Fix list + quick wins"
+    ]
+  },
+  {
+    name: "Revit Family Library Build",
+    time: "3–5 weeks",
+    price: "from $7,200",
+    bullets: [
+      "Parametric families + type catalogs",
+      "QA checklist + sample sheets",
+      "Documentation & training"
+    ]
+  }
+];
 
   const toolLogos: ToolLogo[] = [
     { name: 'Revit', src: '/assets/badges/rvt.png', level: 'Expert' },
@@ -452,14 +485,16 @@ useEffect(() => {
         <div className="md:col-span-6">
           <p className="text-xs uppercase tracking-[0.2em] text-white/60">Structural BIM • Dev • Automation</p>
           <h1 className="mt-4 text-4xl/tight font-semibold md:text-6xl/tight">
-            Structural BIM + Automation that saves hours.
+            BIM automation and structural workflows that save hours every week.
           </h1>
           <p className="mt-5 max-w-2xl text-lg text-white/80">
-            Revit tooling, analysis handoffs, and dashboards that cut friction—pyRevit/C# scripts, data pipelines,
-            and QA/QC checks that teams actually use.
+            I design tools and workflows that teams actually use: pyRevit/C# scripts, Revit→Power BI data pipelines,
+            and clean handoffs to analysis. Fewer RFIs, faster submittals, better visibility.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <a href="/contact" className="inline-flex items-center rounded-2xl bg-white px-5 py-3 font-medium text-neutral-900 transition hover:opacity-90">
+            <a href="/contact" className="inline-flex items-center rounded-2xl bg-white px-5 py-3 font-medium text-neutral-900 transition hover:opacity-90" onClick={()=>{
+              try{ window.plausible?.("Book consult (Hero)"); }catch{}
+            }}>
               Book a 15-min consult
             </a>
             <a href="/work" className="inline-flex items-center rounded-2xl border border-white/20 px-5 py-3 font-medium transition hover:bg-white/10">
@@ -596,7 +631,9 @@ useEffect(() => {
         </div>
         <div className="flex gap-3">
           <a href="/contact" className="rounded-2xl bg-white text-neutral-900 px-5 py-3 font-medium hover:opacity-90">Book consult</a>
-          <a href="mailto:curtis@example.com" className="rounded-2xl border border-white/20 px-5 py-3 font-medium hover:bg-white/10">Email me</a>
+          <a href="mailto:cbolden@cb-designconsultants.com" className="rounded-2xl border border-white/20 px-5 py-3 font-medium hover:bg-white/10">
+            Email me
+          </a>
         </div>
       </div>
     </section>
@@ -613,18 +650,21 @@ useEffect(() => {
     )}
 
     {route === "contact" && <ContactPage />}
-
+    {route === "notfound" && <NotFound />}
+    {route === "privacy" && <PrivacyPage />}
+    {route === "terms" && <TermsPage />}
+    {route === "notfound" && <NotFoundPage />}
     {route === "services" && (
       <>
-        <h1 className="text-3xl md:text-4xl font-semibold">Services</h1>
-        <p className="text-white/70 mt-2 max-w-2xl">
-          Clear scope, timelines, and deliverables focused on measurable outcomes.
-        </p>
-        <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {services.map((s) => (
-            <ServiceCard key={s.name} service={s} />
-          ))}
-        </div>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Service",
+          "name": "BIM Automation Sprint",
+          "provider": {"@type": "Organization","name": "CB Design Consultants"},
+          "areaServed": "US",
+          "offers": {"@type":"Offer","priceCurrency":"USD","price":"4800"}
+        })}} />
+        {/* your Services UI already renders below */}
       </>
     )}
 
@@ -858,8 +898,27 @@ function ServiceCard({ service }: { service: { name: string; time: string; price
       </ul>
       <div className="mt-6 flex items-center justify-between">
         <span className="text-white/90 font-medium">{service.price}</span>
-        <a href="/contact" className="rounded-xl border border-white/15 px-4 py-2 text-sm hover:bg-white/10">Start</a>
+        <a
+          href="/contact"
+          onClick={() => window.plausible && window.plausible(`CTA: Start (${service.name})`)}
+          className="rounded-xl border border-white/15 px-4 py-2 text-sm hover:bg-white/10"
+        >
+          Start
+        </a>
       </div>
     </div>
+  );
+}
+
+function NotFound() {
+  return (
+    <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20">
+      <h1 className="text-3xl md:text-4xl font-semibold">We couldn’t find that page.</h1>
+      <p className="text-white/70 mt-2">Try Home or see recent Work.</p>
+      <div className="mt-6 flex gap-3">
+        <a href="/" className="rounded-xl border border-white/15 px-4 py-2 hover:bg-white/10">← Back Home</a>
+        <a href="/work" className="rounded-xl border border-white/15 px-4 py-2 hover:bg-white/10">See Work</a>
+      </div>
+    </section>
   );
 }

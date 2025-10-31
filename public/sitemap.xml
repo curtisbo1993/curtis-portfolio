@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://www.cb-designconsultants.com/</loc></url>
-  <url><loc>https://www.cb-designconsultants.com/work</loc></url>
-  <url><loc>https://www.cb-designconsultants.com/services</loc></url>
-  <url><loc>https://www.cb-designconsultants.com/tools</loc></url>
-  <url><loc>https://www.cb-designconsultants.com/about</loc></url>
-  <url><loc>https://www.cb-designconsultants.com/contact</loc></url>
-  <!-- add work slugs as you publish -->
+  <url><loc>https://cb-designconsultants.com/</loc></url>
+  <url><loc>https://cb-designconsultants.com/work</loc></url>
+  <url><loc>https://cb-designconsultants.com/services</loc></url>
+  <url><loc>https://cb-designconsultants.com/tools</loc></url>
+  <url><loc>https://cb-designconsultants.com/about</loc></url>
+  <url><loc>https://cb-designconsultants.com/contact</loc></url>
+  <url><loc>https://cb-designconsultants.com/privacy</loc></url>
+  <url><loc>https://cb-designconsultants.com/terms</loc></url>
+  <!-- Add work detail slugs -->
+  <url><loc>https://cb-designconsultants.com/work/pyrevit-sheet-suite</loc></url>
+  <url><loc>https://cb-designconsultants.com/work/revit-analysis-sync</loc></url>
+  <url><loc>https://cb-designconsultants.com/work/coordination-dashboard</loc></url>
 </urlset>
