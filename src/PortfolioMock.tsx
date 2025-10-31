@@ -78,8 +78,9 @@ type RouteKey =
   | "tools"
   | "about"
   | "contact"
+  | "notfound"
   | "work:pyrevit"
-  | `work:${string}`; // NEW: generic slug
+  | `work:${string}`;
 
 type ToolLogo = {
   name: string;
@@ -168,8 +169,8 @@ const jsonLd = {
   const [tab, setTab] = useState<TabKey>("model");
 
   // Hero media
-  const HERO_VIDEO_SRC = "/hero/Hero Video.mp4";
-  const HERO_VIDEO_SRC_DESKTOP = "/hero/Hero Video.mp4";
+  const HERO_VIDEO_SRC = "/hero/hero-video.mp4";
+  const HERO_VIDEO_SRC_DESKTOP = "/hero/hero-video.mp4";
   const HERO_VIDEO_SRC_MOBILE = "/hero/trailer-720.mp4";
   const HERO_POSTER_SRC = "/thumbnail.jpg";
   const HAS_VIDEO_SOURCES = Boolean(
@@ -225,8 +226,24 @@ useEffect(() => {
     if (p.startsWith("/about"))     return setRoute("about");
     if (p.startsWith("/contact"))   return setRoute("contact");
 
-    // fallback
-    setRoute("home");
+    // after the top-level sections…
+    if (p.startsWith("/contact"))   return setRoute("contact");
+
+    // treat /404 as not found (so Share -> /404 shows the message)
+    if (p === "/404") return setRoute("notfound");
+    {route === "notfound" && (
+    <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20">
+      <h1 className="text-3xl md:text-4xl font-semibold">We couldn’t find that page.</h1>
+      <p className="text-white/70 mt-2">Try Home or see recent Work.</p>
+      <div className="mt-6 flex gap-3">
+        <a href="/" className="rounded-xl border border-white/15 px-4 py-2 hover:bg-white/10">← Back Home</a>
+        <a href="/work" className="rounded-xl border border-white/15 px-4 py-2 hover:bg-white/10">See Work</a>
+      </div>
+    </section>
+  )}
+
+    // fallback: unknown route
+    setRoute("notfound");
   };
 
   parse();
