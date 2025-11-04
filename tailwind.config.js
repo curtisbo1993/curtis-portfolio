@@ -27,6 +27,7 @@ export default {
           700: 'hsl(var(--brand-700))',
           800: 'hsl(var(--brand-800))',
           900: 'hsl(var(--brand-900))',
+          blue: "#2D9CDB",
         },
         neutral: {
           50:  'hsl(var(--neutral-50))',

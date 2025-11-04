@@ -9,105 +9,35 @@
       rel="stylesheet"
     />
 
+    <!-- Meta -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0a0a0a" />
+
+    <!-- Basic static title/desc (route-specific SEO comes from src/components/SEO.tsx) -->
+    <title>CB Design Consultants — Structural BIM + Automation</title>
+    <meta
+      name="description"
+      content="Revit tooling, analysis handoffs, and dashboards that cut friction—pyRevit/C# scripts, data pipelines, and QA/QC checks that teams actually use."
+    />
+
+    <!-- Performance / useful connections -->
+    <link rel="preconnect" href="https://formspree.io" />
+    <link rel="preload" as="image" href="/thumbnail.jpg" />
+
     <!-- Vercel Speed Insights -->
     <script defer src="/_vercel/speed-insights/script.js"></script>
 
     <!-- Vercel Web Analytics -->
     <script defer src="/_vercel/insights/script.js"></script>
 
-    <!-- Meta -->
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <!-- Site Title and Description -->
-    <title>CB Design Consultants — Structural BIM + Automation</title>
-    <meta
-      name="description"
-      content="Revit tooling, analysis handoffs, and dashboards that cut friction—pyRevit/C# scripts, data pipelines, and QA/QC checks that teams actually use."
-    />
-    <link rel="canonical" href="https://cb-designconsultants.com/" />
-
-    <!-- Favicons & App Manifest -->
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#0a0a0a" />
-    <link rel="icon" href="/cbdc-favicon-16x16.svg" type="image/svg+xml" />
-    <link rel="icon" href="/favicon.ico" sizes="any" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <link rel="manifest" href="/site.webmanifest" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <link rel="manifest" href="/site.webmanifest" />
-    <link rel="preconnect" href="https://formspree.io" />
-    <link rel="preload" as="image" href="/thumbnail.jpg" />
-
-    <!-- Canonical -->
-    <link rel="canonical" href="https://cb-designconsultants.com/" />
-
-    <!-- Open Graph -->
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="CB Design Consultants" />
-    <meta property="og:title" content="CB Design Consultants — Structural BIM • Dev • Automation" />
-    <meta property="og:description" content="Revit tooling, analysis handoffs, and dashboards that cut friction—pyRevit/C# scripts, data pipelines, and QA/QC checks that teams actually use." />
-    <meta property="og:url" content="https://cb-designconsultants.com/" />
-    <meta property="og:image" content="https://cb-designconsultants.com/og.jpg" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="628" />
-    <meta property="og:image:alt" content="CB Design Consultants" />
-
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="CB Design Consultants — Structural BIM • Dev • Automation" />
-    <meta name="twitter:description" content="Revit tooling, analysis handoffs, and dashboards that cut friction—pyRevit/C# scripts, data pipelines, and QA/QC checks that teams actually use." />
-    <meta name="twitter:image" content="https://cb-designconsultants.com/og.jpg" />
-
-    <!-- Structured Data: Person -->
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "Person",
-        "name": "Curtis Bolden",
-        "url": "https://cb-designconsultants.com/",
-        "jobTitle": "Structural BIM / VDC + Automation",
-        "knowsAbout": [
-          "Revit",
-          "pyRevit",
-          "Dynamo",
-          "Revit API",
-          "Python",
-          "Power BI"
-        ],
-        "sameAs": []
-      }
-    </script>
-
-    <!-- Structured Data: Website -->
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": "Curtis Bolden — Portfolio",
-        "url": "https://cb-designconsultants.com/",
-        "inLanguage": "en"
-      }
-    </script>
-
-    <!-- Vercel Analytics Script -->
-    <script
-      defer
-      src="https://va.vercel-scripts.com/v1/script.js"
-      data-id="YOUR_ID"
-    ></script>
-
-    <!-- Plausible (replace domain with your prod domain) -->
+    <!-- Plausible Analytics -->
     <script
       defer
       data-domain="cb-designconsultants.com"
       src="https://plausible.io/js/script.js"
     ></script>
   </head>
-
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>

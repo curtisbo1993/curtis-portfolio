@@ -3,69 +3,101 @@
 import React from "react";
 import { WORK } from "@/data/work";
 
+// Small SPA link helper so clicks don't full-reload (same behavior as your NavLink)
+function go(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
+  const href = e.currentTarget.getAttribute("href") || "";
+  if (href.startsWith("/")) {
+    e.preventDefault();
+    history.pushState(null, "", href);
+    window.dispatchEvent(new PopStateEvent("popstate"));
+  }
+}
+
 export default function WorkPage() {
   return (
-    <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-      <header className="mb-8">
-        <h1 className="text-3xl md:text-4xl font-semibold">Case studies</h1>
-        <p className="text-white/70 mt-2 max-w-2xl">
-          A few highlights across pyRevit, Revit API, data pipelines, and coordination.
+    <div>
+      <header className="mb-6">
+        <h1 className="text-3xl md:text-4xl font-semibold">Work</h1>
+        <p className="text-white/70 mt-2">
+          Selected projects with measurable outcomes in BIM automation, analysis handoffs, and coordination.
         </p>
       </header>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {/* Cards grid */}
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {WORK.map((w) => (
           <article
             key={w.slug}
-            className="group rounded-3xl border border-white/10 bg-white/[0.03] overflow-hidden"
+            className="group relative rounded-3xl border border-white/10 bg-white/[0.03] overflow-hidden hover:bg-white/[0.06] transition"
           >
-            <a
-              href={`/work/${w.slug}`}
-              onClick={(e) => {
-                // SPA-style navigation (no full reload)
-                if (e.button === 0 && !e.metaKey && !e.ctrlKey) {
-                  e.preventDefault();
-                  history.pushState(null, "", `/work/${w.slug}`);
-                  window.dispatchEvent(new PopStateEvent("popstate"));
-                }
-              }}
-              className="block"
-            >
-              <div className="aspect-[16/9] bg-white/5">
-                {w.hero ? (
-                  <img
-                    src={w.hero}
-                    alt={w.title}
-                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
-                    loading="lazy"
-                  />
-                ) : null}
-              </div>
-              <div className="p-5">
-                <h3 className="text-lg font-semibold">{w.title}</h3>
-                <p className="mt-2 text-sm text-white/80">{w.summary}</p>
-                {w.stack?.length ? (
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {w.stack.slice(0, 4).map((t) => (
-                      <span
-                        key={t}
-                        className="text-[11px] rounded-lg border border-white/10 bg-white/[0.04] px-2 py-1"
-                      >
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-                ) : null}
-                <div className="mt-5">
-                  <span className="text-sm rounded-xl border border-white/15 px-3 py-2 inline-block group-hover:bg-white/10">
-                    Open case study
-                  </span>
+            <a href={`/work/${w.slug}`} onClick={go} className="absolute inset-0 z-10" aria-label={w.title} />
+            {/* Thumb */}
+            <div className="aspect-[16/9] bg-white/5">
+              {w.thumb ? (
+                <img
+                  src={w.thumb}
+                  alt={w.title}
+                  className="h-full w-full object-cover"
+                  loading="lazy"
+                />
+              ) : (
+                <div className="h-full w-full grid place-items-center text-white/50 text-sm">
+                  No thumbnail
                 </div>
+              )}
+            </div>
+
+            {/* Body */}
+            <div className="p-5">
+              <h2 className="text-lg font-semibold">{w.title}</h2>
+              {w.client && (
+                <div className="mt-1 text-xs text-white/60">Client: {w.client}</div>
+              )}
+              <p className="mt-2 text-sm text-white/80 line-clamp-3">{w.summary}</p>
+
+              {/* Tags */}
+              {w.tags?.length ? (
+                <div className="mt-3 flex flex-wrap gap-1.5">
+                  {w.tags.map((t) => (
+                    <span
+                      key={t}
+                      className="text-[11px] rounded-md border border-white/10 bg-white/[0.04] px-2 py-1"
+                    >
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              ) : null}
+
+              {/* KPI chips (top 2 if present) */}
+              {w.metrics?.length ? (
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {w.metrics.slice(0, 2).map((m, i) => (
+                    <span
+                      key={`${m.label}-${i}`}
+                      className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/[0.02] px-3 py-1.5 text-xs"
+                    >
+                      <span className="h-1.5 w-1.5 rounded-full bg-white/60" />
+                      <span className="text-white/70">{m.label}:</span>
+                      <span className="font-medium text-white/90">{m.value}</span>
+                    </span>
+                  ))}
+                </div>
+              ) : null}
+
+              <div className="mt-5">
+                <a
+                  href={`/work/${w.slug}`}
+                  onClick={go}
+                  className="inline-flex items-center rounded-xl border border-white/15 px-3 py-2 text-sm hover:bg-white/10"
+                >
+                  View case study →
+                </a>
               </div>
-            </a>
+            </div>
           </article>
         ))}
       </div>
-    </section>
+    </div>
   );
 }

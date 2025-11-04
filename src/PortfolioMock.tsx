@@ -11,6 +11,9 @@ import SEO from "./components/SEO";
 import { WORK } from "./data/work";
 import PrivacyPage from "./pages/Privacy";
 import TermsPage from "./pages/Terms";
+import ServicesPage from "@/pages/Services";
+import Lightbox from "@/components/Lightbox";
+import LazyImage from "@/components/LazyImage";
 
 /* -------------------- ErrorBoundary -------------------- */
 class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean }> {
@@ -370,6 +373,29 @@ useEffect(() => {
     { quote: "Dashboard made coordination transparent—aging clashes dropped 47% in two sprints.", author: "VDC Director, Manufacturing" },
   ];
 
+// --- Education & Certifications data ---------------------------------------
+  const EDUCATION = [
+    {
+      school: "Western Governors University (WGU)",
+      program: "B.S. Computer Science (ABET)",
+      dates: "In progress",
+      notes: "Focus: software engineering, data structures, algorithms",
+    },
+    {
+      school: "Professional Development (AEC/BIM)",
+      program: "Structural/BIM specialization",
+      dates: "2013–Present",
+      notes: "Industry courses, on-the-job training, and independent study",
+    },
+  ];
+
+  const CERTS = [
+    { name: "Series 65 (Planned)", org: "NASAA / State", status: "Studying" },
+    { name: "CSCP (Planned)", org: "APICS / ASCM", status: "Studying" },
+    { name: "CLTD (Planned)", org: "APICS / ASCM", status: "Studying" },
+    { name: "CSSGB (Planned)", org: "ASQ", status: "Studying" },
+  ];
+
   // Services scroller
   const servicesRef = useRef<HTMLDivElement | null>(null);
   const scrollServices = (dir: number) =>
@@ -650,31 +676,76 @@ useEffect(() => {
     )}
 
     {route === "contact" && <ContactPage />}
-    {route === "notfound" && <NotFound />}
     {route === "privacy" && <PrivacyPage />}
     {route === "terms" && <TermsPage />}
-    {route === "notfound" && <NotFoundPage />}
+    {route === "notfound" && (
+      <>
+        <SEO
+          title="Page Not Found | CB Design Consultants"
+          description="The page you’re looking for doesn’t exist."
+          image="/thumbnail.jpg"
+        />
+        <NotFound />
+      </>
+    )}
     {route === "services" && (
       <>
-        <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "Service",
-          "name": "BIM Automation Sprint",
-          "provider": {"@type": "Organization","name": "CB Design Consultants"},
-          "areaServed": "US",
-          "offers": {"@type":"Offer","priceCurrency":"USD","price":"4800"}
-        })}} />
-        {/* your Services UI already renders below */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Service",
+              "name": "BIM Automation Sprint",
+              "provider": { "@type": "Organization", "name": "CB Design Consultants" },
+              "areaServed": "US",
+              "offers": { "@type": "Offer", "priceCurrency": "USD", "price": "4800" }
+            })
+          }}
+        />
+        <ServicesPage services={services} />
       </>
     )}
 
-    {route === "about" && (
+        {route === "about" && (
       <>
         <h1 className="text-3xl md:text-4xl font-semibold">About</h1>
         <p className="text-white/70 mt-2 max-w-2xl">
           Bio, skills, and companies I’ve contributed to.
         </p>
-        <AboutTabs toolLogos={toolLogos} companies={companies} />
+
+        {/* CTA buttons */}
+        <div className="mt-6 flex flex-wrap gap-3">
+          <a
+            href="/docs/Curtis_Bolden_Resume.pdf"
+            download
+            className="rounded-xl border border-white/15 px-4 py-2 hover:bg-white/10"
+          >
+            Résumé (PDF)
+          </a>
+          <a
+            href="/docs/CB-Design-Consultants_Portfolio.pdf"
+            download
+            className="rounded-xl border border-white/15 px-4 py-2 hover:bg-white/10"
+          >
+            Portfolio (PDF)
+          </a>
+          <a
+            href="/docs/CB-Design-Consultants_Brochure.pdf"
+            download
+            className="rounded-xl border border-white/15 px-4 py-2 hover:bg-white/10"
+          >
+            Brochure (PDF)
+          </a>
+          {/* Future: <a href="/resume-builder" className="rounded-xl bg-white text-neutral-900 px-4 py-2 font-medium hover:opacity-90">Custom Résumé Builder</a> */}
+        </div>
+
+        <AboutTabs
+          toolLogos={toolLogos}
+          companies={companies}
+          education={EDUCATION}
+          certs={CERTS}
+        />
       </>
     )}
 
@@ -751,29 +822,55 @@ function TestimonialsCarousel({ items }) {
   );
 }
 
-function AboutTabs({ toolLogos, companies }: { toolLogos: ToolLogo[]; companies: CompanyLogo[] }) {
-  const [which, setWhich] = useState<"bio" | "skills" | "companies">("bio");
-  return (
-    <div className="mt-6">
-      <div className="flex flex-wrap gap-2">
-        {(["bio", "skills", "companies"] as const).map((k) => (
-          <button
-            key={k}
-            onClick={() => setWhich(k)}
-            className={`rounded-xl border px-3 py-2 text-sm ${
-              which === k ? "bg-white text-neutral-900" : "border-white/15 text-white/80 hover:bg-white/10"
-            }`}
-          >
-            {k[0].toUpperCase() + k.slice(1)}
-          </button>
-        ))}
-      </div>
-      {which === "bio" && <BioBlock />}
-      {which === "skills" && <SkillsBlock toolLogos={toolLogos} />}
-      {which === "companies" && <CompaniesBlock companies={companies} />}
-    </div>
-  );
-}
+    function AboutTabs({
+      toolLogos,
+      companies,
+      education,
+      certs,
+    }: {
+      toolLogos: ToolLogo[];
+      companies: CompanyLogo[];
+      education: Array<{ school: string; program: string; dates: string; notes?: string }>;
+      certs: Array<{ name: string; org?: string; status?: string }>;
+    }) {
+      const [which, setWhich] = useState<"bio" | "skills" | "companies" | "education" | "vision">("bio");
+
+      const tabs: Array<{ key: typeof which; label: string }> = [
+        { key: "bio", label: "Bio" },
+        { key: "skills", label: "Skills" },
+        { key: "companies", label: "Companies" },
+        { key: "education", label: "Education & Certifications" },
+        { key: "vision", label: "Vision / Mission" },
+      ];
+
+      return (
+        <div className="mt-6">
+          {/* Tab buttons */}
+          <div className="flex flex-wrap gap-2">
+            {tabs.map((t) => (
+              <button
+                key={t.key}
+                onClick={() => setWhich(t.key)}
+                className={`rounded-xl border px-3 py-2 text-sm transition
+                ${which === t.key
+                  ? "bg-white text-neutral-900 shadow"
+                  : "border-white/15 text-white/80 hover:bg-white/10 hover:border-white/25"
+                }`}
+              >
+                {t.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Panels */}
+          {which === "bio" && <BioBlock />}
+          {which === "skills" && <SkillsBlock toolLogos={toolLogos} />}
+          {which === "companies" && <CompaniesBlock companies={companies} />}
+          {which === "education" && <EducationBlock education={education} certs={certs} />}
+          {which === "vision" && <VisionBlock />}
+        </div>
+      );
+    }
 
 function BioBlock() {
   return (
@@ -816,48 +913,108 @@ function SkillsBlock({ toolLogos }: { toolLogos: ToolLogo[] }) {
   return (
     <div className="mt-6">
       <div className="text-xs uppercase tracking-wider text-white/60">Software</div>
-      <div className="mt-3 flex gap-3 overflow-x-auto hide-scrollbar pb-1" style={{ WebkitOverflowScrolling: "touch" }}>
-        {toolLogos.slice(0, 14).map((t) => (
-          <span key={t.name} className="shrink-0 inline-flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.04] px-3 py-2">
-            <span className="h-5 w-5 rounded-md overflow-hidden bg-white/10 flex items-center justify-center">
+
+      {/* Clean grid — no outer background box */}
+      <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-5 md:gap-6">
+        {toolLogos.map((t) => (
+          <div
+            key={t.name}
+            className="group rounded-2xl border border-white/10 bg-white/[0.03] p-4 md:p-5 flex flex-col items-center justify-center
+                       hover:bg-white/10 hover:border-white/20 transition-all duration-300 ease-out transform hover:-translate-y-1"
+          >
+            <div className="h-25 w-25 md:h-27 md:w-27 rounded-lg overflow-hidden bg-white/10 flex items-center justify-center">
               {t.src ? (
                 <img
                   src={t.src}
                   alt={t.name}
-                  className="h-5 w-5 object-contain"
+                  className="h-25 w-25 md:h-27 md:w-27 object-contain transition-transform duration-300 group-hover:scale-[1.05]"
                   onError={(e) => {
                     (e.currentTarget as HTMLImageElement).style.display = "none";
                     (e.currentTarget.parentElement as HTMLElement).textContent = t.name[0];
                   }}
                 />
               ) : (
-                <span className="text-[11px]">{t.name[0]}</span>
+                <span className="text-lg md:text-xl">{t.name[0]}</span>
               )}
-            </span>
-            <span className="text-xs text-white/85">{t.name}</span>
-          </span>
+            </div>
+            <div className="mt-3 text-sm md:text-base text-center text-white/80 leading-tight group-hover:text-white transition-colors duration-300">
+              {t.name}
+            </div>
+          </div>
         ))}
       </div>
-      <div className="mt-6 rounded-3xl border border-white/10 bg-white/[0.03] p-6">
-        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4">
-          {toolLogos.map((t) => (
-            <div key={t.name} className="group rounded-xl border border-white/10 bg-white/[0.02] p-3 flex flex-col items-center justify-center hover:bg-white/10 transition">
-              <div className="h-10 w-10 rounded-md overflow-hidden bg-white/10 flex items-center justify-center">
-                {t.src ? (
-                  <img
-                    src={t.src}
-                    alt={t.name}
-                    className="h-10 w-10 object-contain"
-                    onError={(e) => {
-                      (e.currentTarget as HTMLImageElement).style.display = "none";
-                      (e.currentTarget.parentElement as HTMLElement).textContent = t.name[0];
-                    }}
-                  />
-                ) : (
-                  <span className="text-sm">{t.name[0]}</span>
-                )}
+    </div>
+  );
+}
+
+function CompaniesBlock({ companies }: { companies: CompanyLogo[] }) {
+  return (
+    <div className="mt-10">
+      <div className="text-xs uppercase tracking-wider text-white/60">Companies</div>
+      <p className="mt-2 text-white/70 text-sm">
+        Organizations I’ve supported across AEC, manufacturing, and tech.
+      </p>
+
+      <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5 md:gap-6">
+        {companies.map((c) => (
+          <div
+            key={c.name}
+            className="group rounded-2xl border border-white/10 bg-white/[0.03] p-6 md:p-7 flex items-center justify-center 
+                       hover:bg-white/10 hover:border-white/20 transition-all duration-300 ease-out transform hover:-translate-y-1"
+          >
+            {c.src ? (
+              <img
+                src={c.src}
+                alt={c.name}
+                className="h-30 md:h-32 lg:h-34 object-contain transition-transform duration-300 group-hover:scale-[1.05]"
+              />
+            ) : (
+              <span className="text-base md:text-lg text-white/80 text-center group-hover:text-white transition-colors duration-300">
+                {c.name}
+              </span>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function EducationBlock({
+  education,
+  certs,
+}: {
+  education: Array<{ school: string; program: string; dates: string; notes?: string }>;
+  certs: Array<{ name: string; org?: string; status?: string }>;
+}) {
+  return (
+    <div className="mt-6 grid md:grid-cols-2 gap-10">
+      {/* Education */}
+      <div>
+        <div className="text-xs uppercase tracking-wider text-white/60">Education</div>
+        <div className="mt-3 space-y-3">
+          {education.map((e, i) => (
+            <div key={i} className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+              <div className="text-white/90 font-medium">{e.school}</div>
+              <div className="text-white/80">{e.program}</div>
+              <div className="text-white/60 text-sm">{e.dates}</div>
+              {e.notes && <div className="text-white/60 text-sm mt-1">{e.notes}</div>}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Certifications */}
+      <div>
+        <div className="text-xs uppercase tracking-wider text-white/60">Certifications</div>
+        <div className="mt-3 grid grid-cols-1 gap-3">
+          {certs.map((c, i) => (
+            <div key={i} className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 flex items-center justify-between">
+              <div>
+                <div className="text-white/90 font-medium">{c.name}</div>
+                {c.org && <div className="text-white/70 text-sm">{c.org}</div>}
               </div>
-              <div className="mt-2 text-[11px] text-center text-white/70 leading-tight">{t.name}</div>
+              {c.status && <span className="text-xs text-white/60">{c.status}</span>}
             </div>
           ))}
         </div>
@@ -866,17 +1023,23 @@ function SkillsBlock({ toolLogos }: { toolLogos: ToolLogo[] }) {
   );
 }
 
-function CompaniesBlock({ companies }: { companies: CompanyLogo[] }) {
+function VisionBlock() {
   return (
-    <div className="mt-6">
-      <div className="text-xs uppercase tracking-wider text-white/60">Companies</div>
-      <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-        {companies.map((c) => (
-          <div key={c.name} className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 flex items-center justify-center">
-            {c.src ? <img src={c.src} alt={c.name} className="h-10 object-contain" /> : <span className="text-sm text-white/80">{c.name}</span>}
-          </div>
-        ))}
-      </div>
+    <div className="mt-6 rounded-3xl border border-white/10 bg-white/[0.03] p-6">
+      <h2 className="text-2xl font-semibold">Leadership Vision & Mission</h2>
+      <p className="mt-3 text-white/80">
+        <span className="font-medium">Vision:</span> Deliver structural BIM and automation that removes friction,
+        increases clarity, and helps teams ship safer, faster projects with measurable impact.
+      </p>
+      <p className="mt-3 text-white/80">
+        <span className="font-medium">Mission:</span> Build clean workflows and tools—pyRevit/C#, Dynamo, analysis handoffs,
+        and dashboards—that save hours weekly, reduce RFIs, and elevate coordination across disciplines.
+      </p>
+      <ul className="mt-4 space-y-2 text-white/75 text-sm">
+        <li>• Outcomes over output: show time saved, quality improved, and risks reduced.</li>
+        <li>• Teach and document so teams become self-sufficient.</li>
+        <li>• Design with data integrity: guardrails that prevent loss and misalignment.</li>
+      </ul>
     </div>
   );
 }
