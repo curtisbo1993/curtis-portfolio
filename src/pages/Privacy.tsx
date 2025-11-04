@@ -4,109 +4,81 @@ import React from "react";
 
 export default function PrivacyPage() {
   return (
-    <div className="max-w-3xl mx-auto">
-      <h1 className="text-3xl md:text-4xl font-semibold">Privacy Policy</h1>
-      <p className="text-white/70 mt-2">
-        Last updated: {new Date().toLocaleDateString()}
+    <section className="prose prose-invert mx-auto max-w-3xl py-16 px-4 sm:px-6 lg:px-8">
+      <h1>Privacy Policy</h1>
+      <p>Last updated: {new Date().toLocaleDateString()}</p>
+
+      <p>
+        CB Design Consultants (“we,” “our,” “us”) values your privacy.  
+        This policy explains what information we collect, how we use it,
+        and the rights you have when interacting with our website or services.
       </p>
 
-      <div className="prose prose-invert prose-sm md:prose-base mt-6">
-        <p>
-          CB Design Consultants (“we,” “us,” “our”) provides design-technology,
-          BIM, and software services. This Privacy Policy explains how we
-          collect, use, and safeguard information when you visit our website,
-          contact us, or engage our services.
-        </p>
+      <h2>1. Who We Are</h2>
+      <p>
+        CB Design Consultants LLC, a subsidiary of Johnson & Young Corporation.  
+        Email us at 
+        <a href="mailto:info@cb-designconsultants.com">
+          info@cb-designconsultants.com
+        </a>.
+      </p>
 
-        <h2>1. Information We Collect</h2>
-        <ul>
-          <li><strong>Contact data</strong> (name, email, company, phone) you submit through forms or email.</li>
-          <li><strong>Project data</strong> you share for discovery, proposals, or delivery.</li>
-          <li><strong>Usage data</strong> (device, browser, pages visited) via cookies/analytics.</li>
-        </ul>
+      <h2>2. Information We Collect</h2>
+      <ul>
+        <li>
+          <strong>Form Submissions:</strong> Name, email, and message from our contact form.
+        </li>
+        <li>
+          <strong>Usage Data:</strong> Anonymous analytics from Vercel Analytics and Formspree (for delivery status).
+        </li>
+        <li>
+          <strong>Cookies:</strong> We use basic cookies and browser storage for site performance only.
+        </li>
+      </ul>
 
-        <h2>2. How We Use Information</h2>
-        <ul>
-          <li>To respond to inquiries and provide proposals/services.</li>
-          <li>To operate, secure, and improve our website and offerings.</li>
-          <li>For legal compliance, fraud prevention, and recordkeeping.</li>
-        </ul>
+      <h2>3. How We Use Your Information</h2>
+      <ul>
+        <li>Respond to inquiries and provide requested services.</li>
+        <li>Improve site performance and security.</li>
+        <li>Maintain records of client communication and project engagements.</li>
+      </ul>
 
-        <h2>3. Legal Bases (EEA/UK)</h2>
-        <ul>
-          <li><strong>Contract:</strong> to deliver requested services.</li>
-          <li><strong>Legitimate interests:</strong> site security, analytics, communication.</li>
-          <li><strong>Consent:</strong> where required (e.g., certain cookies or marketing).</li>
-        </ul>
+      <h2>4. Data Sharing & Storage</h2>
+      <p>
+        We do not sell or rent personal information.  
+        Limited data may be processed by our trusted service providers
+        (Formspree, Vercel, and Google Fonts) under their respective privacy policies.
+      </p>
 
-        <h2>4. Cookies & Analytics</h2>
-        <p>
-          We may use cookies and privacy-respecting analytics to understand site
-          performance. You can control cookies in your browser settings.
-        </p>
+      <h2>5. Data Retention</h2>
+      <p>
+        We retain contact form messages for as long as necessary to respond and comply with legal obligations.
+        Analytics data is stored only in aggregate form.
+      </p>
 
-        <h2>5. Sharing</h2>
-        <p>
-          We do not sell personal information. We share data only with:
-          (i) service providers (e.g., hosting, email, form handling);
-          (ii) professional advisors; and (iii) when required by law.
-        </p>
+      <h2>6. Your Rights</h2>
+      <ul>
+        <li>Request a copy or deletion of your data by emailing us.</li>
+        <li>Opt out of analytics by using a browser with Do Not Track enabled.</li>
+      </ul>
 
-        <h2>6. Data Retention</h2>
-        <p>
-          We retain information as needed for the purposes above, to comply with
-          legal obligations, and to resolve disputes.
-        </p>
+      <h2>7. Security</h2>
+      <p>
+        Our site uses HTTPS encryption and industry-standard hosting security through Vercel.
+        We take reasonable measures to protect data but cannot guarantee absolute security online.
+      </p>
 
-        <h2>7. Security</h2>
-        <p>
-          We use reasonable administrative, technical, and organizational
-          measures to protect information. No method of transmission or storage
-          is 100% secure.
-        </p>
+      <h2>8. Links to Other Sites</h2>
+      <p>
+        Our website may link to external resources for education or project examples.
+        We are not responsible for their content or privacy practices.
+      </p>
 
-        <h2>8. Your Rights</h2>
-        <ul>
-          <li>Access, correct, or delete your personal information.</li>
-          <li>Object to or restrict processing in certain cases.</li>
-          <li>Withdraw consent where processing is based on consent.</li>
-          <li>Data portability (where applicable).</li>
-        </ul>
-        <p>To exercise rights, contact: <a href="mailto:cbolden@cb-designconsultants.com">cbolden@cb-designconsultants.com</a>.</p>
-
-        <h2>9. CCPA/CPRA (California)</h2>
-        <p>
-          California residents may request access to, deletion of, or details
-          about personal information, and opt out of certain sharing. We do not
-          “sell” personal information as defined by CPRA.
-        </p>
-
-        <h2>10. Children</h2>
-        <p>Our site and services are not directed to children under 13.</p>
-
-        <h2>11. International Transfers</h2>
-        <p>
-          If you access our site from outside the U.S., your information may be
-          processed in the U.S. and other countries with different data laws.
-        </p>
-
-        <h2>12. Third-Party Links</h2>
-        <p>We are not responsible for the privacy practices of external sites.</p>
-
-        <h2>13. Changes</h2>
-        <p>
-          We may update this Policy. The “Last updated” date will reflect the
-          current version.
-        </p>
-
-        <h2>14. Contact</h2>
-        <p>
-          Questions? Contact{" "}
-          <a href="mailto:cbolden@cb-designconsultants.com">
-            cbolden@cb-designconsultants.com
-          </a>.
-        </p>
-      </div>
-    </div>
+      <h2>9. Changes to This Policy</h2>
+      <p>
+        We may update this Privacy Policy from time to time.
+        Updates will appear on this page with a new “Last updated” date.
+      </p>
+    </section>
   );
 }
