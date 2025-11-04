@@ -4,46 +4,27 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Poppins:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
     <!-- Meta -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#0a0a0a" />
 
-    <!-- Basic static title/desc (route-specific SEO comes from src/components/SEO.tsx) -->
+    <!-- Basic static title/desc (route-specific SEO handled in src/components/SEO.tsx) -->
     <title>CB Design Consultants — Structural BIM + Automation</title>
-    <meta
-      name="description"
-      content="Revit tooling, analysis handoffs, and dashboards that cut friction—pyRevit/C# scripts, data pipelines, and QA/QC checks that teams actually use."
-    />
+    <meta name="description" content="Revit tooling, analysis handoffs, and dashboards that cut friction—pyRevit/C# scripts, data pipelines, and QA/QC checks that teams actually use." />
 
     <!-- Performance / useful connections -->
     <link rel="preconnect" href="https://formspree.io" />
     <link rel="preload" as="image" href="/thumbnail.jpg" />
 
-    <!-- Vercel Speed Insights -->
-    <script type="module" defer src="/_vercel/speed-insights/script.js"></script>
-
-    <!-- Vercel Web Analytics -->
-    <script type="module" defer src="/_vercel/insights/script.js"></script>
-
-    <!-- Plausible Analytics -->
-    <script
-      defer
-      data-domain="cb-designconsultants.com"
-      src="https://plausible.io/js/script.js"
-    ></script>
-
-    <script type="module" src="/_vercel/speed-insights/script.js"></script>
-    <script type="module" src="/_vercel/insights/script.js"></script>
-
+    <!-- Plausible Analytics (OK to keep) -->
+    <script defer data-domain="cb-designconsultants.com" src="https://plausible.io/js/script.js"></script>
   </head>
   <body>
     <div id="root"></div>
+    <!-- Vite entry ONLY -->
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
