@@ -1,73 +1,90 @@
-# React + TypeScript + Vite
+# Curtis Bolden Portfolio - CB Design Consultants
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern portfolio website showcasing BIM automation, structural workflows, and development services.
 
-Currently, two official plugins are available:
+## 🚀 Quick Start
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+```bash
+# Install dependencies
+npm install
 
-## React Compiler
+# Start development server
+npm run dev
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# Build for production
+npm run build
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Visit `http://localhost:5173` to see the site.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 📖 Documentation
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for:
+- Complete setup instructions
+- Environment variable configuration
+- Deployment guide
+- Customization tips
+- Production checklist
+
+## 🎯 Key Features
+
+- Single Page Application with client-side routing
+- Interactive quote builder with Stripe integration
+- Case studies with detailed metrics
+- Organized service catalog
+- Contact forms via Formspree
+- SEO optimized with dynamic meta tags
+- Mobile-first responsive design
+
+## 🛠️ Tech Stack
+
+- React 19 + TypeScript
+- Vite (rolldown-vite)
+- Tailwind CSS 4
+- Vercel Analytics
+- Stripe Payments
+- Formspree Forms
+
+## 📝 Environment Setup
+
+Create `.env.local`:
+
+```bash
+STRIPE_PUBLISHABLE_KEY=pk_live_...
+STRIPE_SECRET_KEY=sk_live_...
+BASE_URL=http://localhost:3000
+VITE_CALENDLY_URL=https://calendly.com/your-username/30min
 ```
+
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed instructions.
+
+## 📦 Project Structure
+
+```
+src/
+├── components/     # Reusable UI components
+├── context/        # React context providers
+├── data/          # Service & work data
+├── pages/         # Page components
+└── hooks/         # Custom React hooks
+```
+
+## 🚢 Deployment
+
+Deploy to Vercel with one click or use the CLI:
+
+```bash
+npm i -g vercel
+vercel --prod
+```
+
+## 📞 Support
+
+- Email: cbolden@cb-designconsultants.com
+- Website: https://cb-designconsultants.com
+- LinkedIn: https://www.linkedin.com/in/curtisaboldenjr/
+
+---
+
+© 2025 CB Design Consultants. All Rights Reserved.
+

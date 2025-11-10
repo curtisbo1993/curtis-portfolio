@@ -14,6 +14,8 @@ import TermsPage from "./pages/Terms";
 import ServicesPage from "@/pages/Services";
 import Lightbox from "@/components/Lightbox";
 import LazyImage from "@/components/LazyImage";
+import QuoteDrawer from "@/components/QuoteDrawer";
+import { useQuote } from "@/context/QuoteContext";
 
 /* -------------------- ErrorBoundary -------------------- */
 class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean }> {
@@ -103,6 +105,7 @@ type CompanyLogo = { name: string; src?: string };
 export default function AppShell() {
   // Router state (single instance)
   const [route, setRoute] = useState<RouteKey>("home");
+  const { lines, setOpen } = useQuote();
 
   // Scroll-to-top + focus target
 const mainRef = useRef<HTMLElement | null>(null);
@@ -344,7 +347,6 @@ useEffect(() => {
     { name: 'After Effects', src: '/assets/badges/ae.png', level: 'Advanced' },
     { name: 'Microsoft Suites', src: '/assets/badges/microsoft.png', level: 'Advanced' },
     { name: 'PowerBI', src: '/assets/badges/powerbi.png', level: 'Advanced' },
-    // add the rest...***FIX AND UPDATE!!!!!
   ];
 
   const companies: CompanyLogo[] = [
@@ -364,7 +366,6 @@ useEffect(() => {
     { name: 'Tesla', src: '/assets/logos/tesla.png' },
     { name: 'TK Architects International', src: '/assets/logos/tk-architects-international.png' },
     { name: 'Wade Trim', src: '/assets/logos/wade-trim.png' },
-    // add the rest...
   ];
 
   const testimonials = [
@@ -480,6 +481,14 @@ useEffect(() => {
                   </NavLink>
                 );
               })}
+
+              <button
+                onClick={() => setOpen(true)}
+                className="ml-3 rounded-xl border border-white/15 px-4 py-2 text-sm hover:bg-white/10"
+                aria-label={`Open cart (${lines.length} selected)`}
+              >
+                Cart • {lines.length}
+              </button>
 
               <a
                 href="/contact"
@@ -761,8 +770,9 @@ useEffect(() => {
 )}
 
       </main>
-
+      
       <Footer />
+      <QuoteDrawer />
     </div>
   </ErrorBoundary>
 );

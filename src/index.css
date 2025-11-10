@@ -190,4 +190,11 @@
 .focus-ring { @apply outline-none focus-visible:ring-2 focus-visible:ring-offset-2; }
 .focus-ring { --tw-ring-color: var(--brand-hex); }
 
+/* e.g., in src/index.css */
+.legal-page h1 { font-size: 2rem; line-height: 1.2; }
+.legal-page h2 { margin-top: 2.25rem; font-size: 1.25rem; line-height: 1.3; }
+.legal-page p, .legal-page li { line-height: 1.7; }
+.legal-page nav a { text-decoration: none; }
+.legal-page nav a:hover { text-decoration: underline; }
+
 
